@@ -1,0 +1,11 @@
+<%- include('_layout_head', { pageTitle: 'Error' }) %>
+
+<div class="admin-wrap">
+  <%- include('_sidebar') %>
+  <main class="admin-main">
+    <div class="topbar"><div><h1>Something went wrong</h1></div></div>
+    <div class="flash flash-error"><%= error %></div>
+    <p><a href="/admin">Back to dashboard</a></p>
+  </main>
+</div>
+</body></html>

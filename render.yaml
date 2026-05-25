@@ -1,0 +1,28 @@
+# Render.com one-click deploy.
+# 1. Push this repo to GitHub.
+# 2. In Render, "New +" → "Blueprint" → connect this repo.
+# 3. Render will read this file, create the service, and prompt for env vars.
+
+services:
+  - type: web
+    name: crs
+    env: node
+    plan: starter
+    region: oregon
+    buildCommand: npm ci --omit=dev && npm run init-db
+    startCommand: node server.js
+    healthCheckPath: /api/projects
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: ADMIN_USERNAME
+        value: admin
+      - key: ADMIN_PASSWORD
+        sync: false           # Render will prompt at deploy time
+    disk:
+      name: crs-data
+      mountPath: /opt/render/project/src/db
+      sizeGB: 1

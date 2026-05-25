@@ -1,0 +1,43 @@
+<%- include('_layout_head', { pageTitle: (mode === 'new' ? 'Add partner' : 'Edit partner') }) %>
+
+<div class="admin-wrap">
+  <%- include('_sidebar') %>
+  <main class="admin-main">
+    <div class="topbar">
+      <div>
+        <div class="breadcrumb"><a href="/admin/partners">← Partners</a></div>
+        <h1><%= mode === 'new' ? 'Add partner' : 'Edit partner' %></h1>
+      </div>
+    </div>
+
+    <% if (flash) { %><div class="flash flash-<%= flash.type %>"><%= flash.message %></div><% } %>
+
+    <form method="POST" action="<%= mode === 'new' ? '/admin/partners' : '/admin/partners/' + partner.id %>" class="panel" style="max-width:560px;">
+      <div class="form-row">
+        <label for="category">Category</label>
+        <select id="category" name="category">
+          <option value="government"  <%= partner.category === 'government' ? 'selected' : '' %>>Government</option>
+          <option value="development" <%= partner.category === 'development' ? 'selected' : '' %>>Development Cooperation</option>
+          <option value="community"   <%= partner.category === 'community' ? 'selected' : '' %>>Communities</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label for="name">Name *</label>
+        <input id="name" name="name" type="text" required value="<%= partner.name || '' %>" />
+      </div>
+      <div class="form-row">
+        <label for="description">Note (optional)</label>
+        <input id="description" name="description" type="text" value="<%= partner.description || '' %>" placeholder="Optional short note" />
+      </div>
+      <div class="form-row" style="max-width:200px;">
+        <label for="display_order">Display order</label>
+        <input id="display_order" name="display_order" type="number" value="<%= partner.display_order != null ? partner.display_order : 0 %>" />
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary"><%= mode === 'new' ? 'Add partner' : 'Save changes' %></button>
+        <a href="/admin/partners" class="btn btn-secondary">Cancel</a>
+      </div>
+    </form>
+  </main>
+</div>
+</body></html>

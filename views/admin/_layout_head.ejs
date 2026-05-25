@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= typeof pageTitle !== 'undefined' ? pageTitle : 'CRS Admin' %> · Community Resource Systems</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper: #faf8f4;
+      --cream: #f3eee5;
+      --ink:   #1a1a1a;
+      --grey:  #6b6b6b;
+      --mid-grey: #9a9a9a;
+      --line:  #e6e1d6;
+      --accent:#b8541a;
+      --accent-dark:#943f12;
+      --success: #2e7d4f;
+      --error: #b3261e;
+      --radius: 8px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--paper);
+      color: var(--ink);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { color: var(--accent-dark); }
+    h1, h2, h3, h4 { font-family: 'Fraunces', Georgia, serif; font-weight: 500; letter-spacing: -0.01em; }
+    h1 { font-size: 28px; margin-bottom: 6px; }
+    h2 { font-size: 22px; margin-bottom: 16px; }
+    h3 { font-size: 18px; margin-bottom: 12px; }
+    .label {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--grey);
+      font-weight: 600;
+    }
+    /* Layout */
+    .admin-wrap { display: flex; min-height: 100vh; }
+    .admin-sidebar {
+      width: 240px;
+      background: #fff;
+      border-right: 1px solid var(--line);
+      padding: 24px 0;
+      flex-shrink: 0;
+    }
+    .admin-sidebar .brand {
+      padding: 0 24px 24px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .admin-sidebar .brand-mark {
+      width: 32px; height: 32px;
+      background: var(--ink); color: var(--paper);
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.04em;
+    }
+    .admin-sidebar .brand-text { font-weight: 600; font-size: 14px; }
+    .admin-sidebar nav a {
+      display: block;
+      padding: 10px 24px;
+      color: var(--ink);
+      font-size: 14px;
+      border-left: 3px solid transparent;
+    }
+    .admin-sidebar nav a:hover { background: var(--cream); color: var(--ink); }
+    .admin-sidebar nav a.active {
+      border-left-color: var(--accent);
+      color: var(--accent);
+      background: var(--cream);
+      font-weight: 500;
+    }
+    .admin-sidebar .sidebar-section {
+      padding: 16px 24px 8px;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--mid-grey);
+      font-weight: 600;
+    }
+    .admin-main { flex: 1; padding: 32px 40px; max-width: 1100px; }
+    .topbar {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 32px;
+    }
+    .topbar .user {
+      font-size: 13px; color: var(--grey);
+    }
+    .topbar .user form { display: inline; }
+    .topbar .user button {
+      background: none; border: none; color: var(--grey);
+      font-size: 13px; cursor: pointer; padding: 0;
+      text-decoration: underline;
+    }
+    .topbar .user button:hover { color: var(--ink); }
+
+    /* Cards / panels */
+    .panel {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .stat-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr));
+      gap: 16px; margin-bottom: 32px;
+    }
+    .stat-card {
+      background: #fff; border: 1px solid var(--line); border-radius: var(--radius);
+      padding: 20px;
+    }
+    .stat-card .stat-label {
+      font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--grey); font-weight: 600;
+    }
+    .stat-card .stat-value {
+      font-family: 'Fraunces', serif; font-size: 32px; margin-top: 8px;
+      font-weight: 500;
+    }
+    .stat-card a { display: inline-block; margin-top: 8px; font-size: 13px; }
+
+    /* Tables */
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th, td {
+      text-align: left; padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+    }
+    th { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--grey); font-weight: 600; }
+    td .row-actions { display: flex; gap: 8px; }
+    td.muted { color: var(--mid-grey); }
+    .empty-state {
+      text-align: center; padding: 48px 24px;
+      color: var(--grey);
+    }
+    .empty-state h3 { color: var(--ink); margin-bottom: 8px; }
+
+    /* Buttons */
+    .btn {
+      display: inline-block; padding: 10px 18px; border-radius: 6px;
+      font-size: 14px; font-weight: 500; cursor: pointer; border: 1px solid transparent;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+      text-decoration: none; font-family: inherit;
+    }
+    .btn-primary { background: var(--ink); color: var(--paper); }
+    .btn-primary:hover { background: #000; color: var(--paper); }
+    .btn-secondary { background: #fff; color: var(--ink); border-color: var(--line); }
+    .btn-secondary:hover { background: var(--cream); }
+    .btn-danger { background: #fff; color: var(--error); border-color: var(--line); }
+    .btn-danger:hover { background: #fdecec; border-color: var(--error); }
+    .btn-sm { padding: 6px 12px; font-size: 13px; }
+    .btn-link { background: none; border: none; padding: 0; color: var(--accent); cursor: pointer; font-size: 13px; }
+    .btn-link:hover { color: var(--accent-dark); }
+
+    /* Forms */
+    .form-row { margin-bottom: 18px; }
+    .form-row label {
+      display: block; font-size: 13px; font-weight: 500;
+      margin-bottom: 6px; color: var(--ink);
+    }
+    .form-row .hint { font-size: 12px; color: var(--mid-grey); margin-top: 4px; }
+    .form-row input[type=text],
+    .form-row input[type=number],
+    .form-row input[type=password],
+    .form-row input[type=email],
+    .form-row textarea,
+    .form-row select {
+      width: 100%; padding: 10px 12px;
+      border: 1px solid var(--line); border-radius: 6px;
+      background: var(--paper); font-family: inherit; font-size: 14px;
+    }
+    .form-row textarea { min-height: 120px; resize: vertical; }
+    .form-row input:focus, .form-row textarea:focus, .form-row select:focus {
+      outline: none; border-color: var(--ink);
+    }
+    .form-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-actions {
+      margin-top: 24px; display: flex; gap: 12px;
+      padding-top: 20px; border-top: 1px solid var(--line);
+    }
+    .checkbox-row { display: flex; align-items: center; gap: 8px; }
+    .checkbox-row input { width: auto !important; }
+
+    /* Flash messages */
+    .flash {
+      padding: 12px 16px; border-radius: 6px; margin-bottom: 24px;
+      font-size: 14px; border: 1px solid;
+    }
+    .flash-success { background: #ecf6f0; color: var(--success); border-color: #c7e3d2; }
+    .flash-error   { background: #fdecec; color: var(--error);   border-color: #f3c8c8; }
+
+    .page-actions { display: flex; gap: 12px; }
+    .breadcrumb { font-size: 13px; color: var(--grey); margin-bottom: 4px; }
+    .breadcrumb a { color: var(--grey); }
+
+    /* Login page */
+    .login-wrap {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      padding: 24px;
+    }
+    .login-card {
+      background: #fff; border: 1px solid var(--line); border-radius: 12px;
+      padding: 40px; max-width: 380px; width: 100%;
+    }
+    .login-card .brand-mark {
+      width: 48px; height: 48px;
+      background: var(--ink); color: var(--paper);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700; letter-spacing: 0.04em;
+      margin-bottom: 20px;
+    }
+    .login-card h1 { font-size: 22px; margin-bottom: 4px; }
+    .login-card p.sub { color: var(--grey); font-size: 14px; margin-bottom: 24px; }
+  </style>
+</head>
+<body>

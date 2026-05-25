@@ -1,0 +1,1924 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Community Resource Systems</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green-dark:   #1B3D2F;
+      --green-mid:    #2D6A4F;
+      --green-light:  #52B788;
+      --ochre:        #C9973A;
+      --cream:        #F7F4EF;
+      --paper:        #FDFBF8;
+      --charcoal:     #1C1C1E;
+      --mid-grey:     #6B7280;
+      --border:       #E5E1D8;
+      --white:        #FFFFFF;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--paper);
+      color: var(--charcoal);
+      line-height: 1.7;
+      font-size: 16px;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ─── NAV ─────────────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      background: rgba(253,251,248,0.96);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      height: 68px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 48px;
+    }
+
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      font-weight: 700; font-size: 14px; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--green-dark);
+    }
+
+    .nav-logo-mark {
+      width: 32px; height: 32px; border-radius: 6px;
+      background: var(--green-dark);
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-size: 13px; font-weight: 700; letter-spacing: 0;
+    }
+
+    .nav-links {
+      display: flex; align-items: center; gap: 36px; list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 13px; font-weight: 500; letter-spacing: 0.04em;
+      color: var(--mid-grey); text-transform: uppercase;
+      transition: color 0.2s;
+      cursor: pointer;
+    }
+
+    .nav-links a:hover, .nav-links a.active { color: var(--green-dark); }
+
+    .nav-cta {
+      background: var(--green-dark); color: white !important;
+      padding: 9px 22px; border-radius: 4px;
+      font-size: 13px !important; font-weight: 500 !important;
+      transition: background 0.2s !important;
+    }
+    .nav-cta:hover { background: var(--green-mid) !important; }
+
+    /* ─── PAGES ───────────────────────────────────────────── */
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* ─── SHARED SECTION STYLES ──────────────────────────── */
+    .section { padding: 100px 0; }
+    .section-sm { padding: 64px 0; }
+    .container { max-width: 1080px; margin: 0 auto; padding: 0 40px; }
+    .container-wide { max-width: 1240px; margin: 0 auto; padding: 0 40px; }
+
+    .label {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--ochre);
+      margin-bottom: 14px;
+    }
+
+    h1, h2, h3 { font-family: 'Lora', serif; font-weight: 600; line-height: 1.3; }
+
+    h1 { font-size: clamp(36px, 5vw, 58px); }
+    h2 { font-size: clamp(28px, 3.5vw, 40px); }
+    h3 { font-size: 20px; }
+
+    p { color: var(--mid-grey); line-height: 1.8; }
+
+    .divider {
+      width: 48px; height: 3px;
+      background: var(--ochre); border-radius: 2px;
+      margin: 24px 0;
+    }
+
+    /* ─── BUTTONS ─────────────────────────────────────────── */
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 13px 28px; border-radius: 4px;
+      font-size: 13px; font-weight: 600; letter-spacing: 0.04em;
+      cursor: pointer; transition: all 0.2s; border: none;
+    }
+
+    .btn-primary {
+      background: var(--green-dark); color: white;
+    }
+    .btn-primary:hover { background: var(--green-mid); }
+
+    .btn-outline {
+      background: transparent; color: var(--green-dark);
+      border: 1.5px solid var(--green-dark);
+    }
+    .btn-outline:hover { background: var(--green-dark); color: white; }
+
+    .btn-light {
+      background: white; color: var(--green-dark);
+    }
+    .btn-light:hover { background: var(--cream); }
+
+    /* ═══════════════════════════════════════════════════════
+       HOMEPAGE
+    ═══════════════════════════════════════════════════════ */
+
+    /* Hero */
+    .hero {
+      min-height: 100vh;
+      display: grid; grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding-top: 68px;
+      background: var(--paper);
+    }
+
+    .hero-content { padding: 80px 80px 80px 40px; max-width: 640px; }
+
+    .hero h1 { color: var(--charcoal); margin-bottom: 24px; }
+    .hero h1 span { color: var(--green-mid); }
+    .hero p.lead {
+      font-size: 17px; color: var(--mid-grey);
+      margin-bottom: 40px; max-width: 480px;
+    }
+
+    .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+
+    .hero-visual {
+      height: 100vh;
+      background: var(--green-dark);
+      position: relative; overflow: hidden;
+      display: flex; flex-direction: column;
+      justify-content: center; align-items: center; padding: 60px;
+    }
+
+    .hero-visual::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+
+    .hero-stat-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 2px;
+      width: 100%; max-width: 380px;
+    }
+
+    .hero-stat {
+      background: rgba(255,255,255,0.07);
+      padding: 32px 28px;
+    }
+    .hero-stat:first-child { border-radius: 12px 0 0 0; }
+    .hero-stat:nth-child(2) { border-radius: 0 12px 0 0; }
+    .hero-stat:nth-child(3) { border-radius: 0 0 0 12px; }
+    .hero-stat:last-child { border-radius: 0 0 12px 0; }
+
+    .hero-stat .number {
+      font-size: 36px; font-weight: 700; color: white;
+      font-family: 'Lora', serif;
+    }
+
+    .hero-stat .desc {
+      font-size: 12px; color: rgba(255,255,255,0.55);
+      margin-top: 4px; letter-spacing: 0.04em; line-height: 1.4;
+    }
+
+    .hero-badge {
+      position: absolute; bottom: 48px; left: 48px; right: 48px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 8px; padding: 20px 24px;
+      display: flex; align-items: center; gap: 16px;
+    }
+    .hero-badge-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: var(--green-light); flex-shrink: 0;
+    }
+    .hero-badge p {
+      font-size: 13px; color: rgba(255,255,255,0.7);
+      line-height: 1.5;
+    }
+
+    /* Who We Are strip */
+    .who-strip {
+      background: var(--cream); border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 80px 0;
+    }
+
+    .who-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items: center;
+    }
+
+    .who-text h2 { margin-bottom: 20px; }
+    .who-text p { margin-bottom: 20px; }
+    .who-text .btn { margin-top: 12px; }
+
+    .who-quote {
+      background: var(--green-dark); color: white;
+      border-radius: 12px; padding: 48px 40px;
+      position: relative;
+    }
+
+    .who-quote::before {
+      content: '"';
+      font-size: 120px; font-family: 'Lora', serif;
+      color: rgba(255,255,255,0.1);
+      position: absolute; top: -10px; left: 30px;
+      line-height: 1;
+    }
+
+    .who-quote p {
+      font-family: 'Lora', serif; font-style: italic;
+      font-size: 18px; color: rgba(255,255,255,0.9);
+      line-height: 1.7; position: relative; z-index: 1;
+    }
+
+    /* NAS Framework teaser */
+    .nas-section { background: var(--paper); }
+
+    .nas-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 2px; margin-top: 56px;
+    }
+
+    .nas-card {
+      background: var(--cream); padding: 48px 36px;
+      transition: background 0.25s;
+      cursor: default;
+    }
+    .nas-card:first-child { border-radius: 12px 0 0 12px; }
+    .nas-card:last-child { border-radius: 0 12px 12px 0; }
+    .nas-card:hover { background: var(--green-dark); }
+    .nas-card:hover .nas-icon { background: rgba(255,255,255,0.15); color: white; }
+    .nas-card:hover h3, .nas-card:hover p { color: white; }
+    .nas-card:hover p { color: rgba(255,255,255,0.75); }
+
+    .nas-icon {
+      width: 52px; height: 52px; border-radius: 10px;
+      background: white; display: flex; align-items: center;
+      justify-content: center; font-size: 22px;
+      margin-bottom: 24px; border: 1px solid var(--border);
+      transition: all 0.25s;
+    }
+
+    .nas-card h3 { margin-bottom: 12px; transition: color 0.25s; }
+    .nas-card p { font-size: 14px; transition: color 0.25s; }
+
+    /* Partners strip */
+    .partners-section { background: var(--cream); }
+
+    .partners-header { text-align: center; margin-bottom: 56px; }
+    .partners-header h2 { margin-bottom: 16px; }
+
+    .partners-cols {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+    }
+
+    .partner-col {
+      background: white; padding: 40px 32px;
+    }
+    .partner-col:first-child { border-radius: 12px 0 0 12px; }
+    .partner-col:last-child { border-radius: 0 12px 12px 0; }
+
+    .partner-col-label {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--ochre);
+      margin-bottom: 20px;
+    }
+
+    .partner-col h3 { font-size: 17px; margin-bottom: 16px; }
+
+    .partner-item {
+      display: flex; align-items: flex-start; gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .partner-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--green-light); margin-top: 9px; flex-shrink: 0;
+    }
+
+    .partner-item p {
+      font-size: 14px; color: var(--charcoal); line-height: 1.5;
+    }
+
+    /* CTA Band */
+    .cta-band {
+      background: var(--green-dark); padding: 80px 0;
+    }
+
+    .cta-inner {
+      display: flex; align-items: center;
+      justify-content: space-between; gap: 40px;
+    }
+
+    .cta-text h2 { color: white; margin-bottom: 12px; }
+    .cta-text p { color: rgba(255,255,255,0.65); max-width: 500px; }
+
+    /* ═══════════════════════════════════════════════════════
+       INNER PAGE HERO
+    ═══════════════════════════════════════════════════════ */
+
+    .page-hero {
+      background: var(--green-dark);
+      padding: 140px 0 80px;
+    }
+
+    .page-hero .label { color: var(--ochre); }
+    .page-hero h1 { color: white; font-size: clamp(30px, 4vw, 46px); margin-bottom: 20px; }
+    .page-hero p { color: rgba(255,255,255,0.65); max-width: 580px; font-size: 17px; }
+
+    /* ═══════════════════════════════════════════════════════
+       SERVICES PAGE
+    ═══════════════════════════════════════════════════════ */
+
+    .services-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr);
+      gap: 2px; margin-top: 60px;
+    }
+
+    .service-card {
+      background: var(--cream); padding: 48px 40px;
+    }
+    .service-card:nth-child(1) { border-radius: 12px 0 0 0; }
+    .service-card:nth-child(2) { border-radius: 0 12px 0 0; }
+    .service-card:nth-child(3) { border-radius: 0 0 0 12px; }
+    .service-card:nth-child(4) { border-radius: 0 0 12px 0; }
+    .service-card:nth-child(5) { border-radius: 0 0 0 12px; }
+    .service-card:nth-child(6) { border-radius: 0 0 12px 0; }
+
+    .service-number {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.14em;
+      color: var(--ochre); margin-bottom: 16px;
+    }
+
+    .service-card h3 { margin-bottom: 14px; }
+    .service-card p { font-size: 14px; line-height: 1.75; }
+
+    .service-features {
+      list-style: none; margin-top: 20px;
+    }
+
+    .service-features li {
+      font-size: 13px; color: var(--mid-grey);
+      padding: 6px 0; border-top: 1px solid var(--border);
+      display: flex; align-items: center; gap: 10px;
+    }
+
+    .service-features li::before {
+      content: '→'; color: var(--green-light); font-size: 12px;
+    }
+
+    .serve-split {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 2px; margin-top: 60px;
+    }
+
+    .serve-card {
+      padding: 48px 40px;
+    }
+
+    .serve-card:first-child {
+      background: var(--green-dark); border-radius: 12px 0 0 12px;
+    }
+
+    .serve-card:last-child {
+      background: var(--cream); border-radius: 0 12px 12px 0;
+    }
+
+    .serve-card.dark .label { color: var(--ochre); }
+    .serve-card.dark h3 { color: white; margin-bottom: 20px; }
+    .serve-card.dark li { color: rgba(255,255,255,0.75); border-color: rgba(255,255,255,0.12); }
+    .serve-card.dark li::before { color: var(--green-light); }
+
+    .serve-card.light .label { color: var(--ochre); }
+    .serve-card.light h3 { color: var(--charcoal); margin-bottom: 20px; }
+
+    .serve-list {
+      list-style: none; margin-top: 0;
+    }
+
+    .serve-list li {
+      font-size: 14px; color: var(--mid-grey);
+      padding: 10px 0; border-top: 1px solid var(--border);
+      display: flex; align-items: flex-start; gap: 12px;
+    }
+
+    .serve-list li::before { content: '→'; color: var(--green-light); font-size: 12px; margin-top: 2px; flex-shrink: 0; }
+
+    /* ═══════════════════════════════════════════════════════
+       APPROACH PAGE
+    ═══════════════════════════════════════════════════════ */
+
+    .approach-intro {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
+      align-items: start; padding-bottom: 80px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .approach-intro h2 { margin-bottom: 20px; }
+    .approach-intro p { margin-bottom: 16px; }
+
+    .approach-pillars { padding-top: 80px; }
+
+    .pillar {
+      display: grid; grid-template-columns: 80px 1fr;
+      gap: 40px; align-items: start;
+      padding: 48px 0; border-bottom: 1px solid var(--border);
+    }
+
+    .pillar:last-child { border-bottom: none; }
+
+    .pillar-num {
+      font-size: 48px; font-weight: 700; font-family: 'Lora', serif;
+      color: var(--border); line-height: 1;
+    }
+
+    .pillar-content h3 {
+      font-size: 26px; margin-bottom: 16px;
+      display: flex; align-items: center; gap: 14px;
+    }
+
+    .pillar-tag {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.14em;
+      text-transform: uppercase; color: white;
+      background: var(--green-mid); padding: 4px 10px; border-radius: 100px;
+    }
+
+    .pillar-content p { margin-bottom: 20px; }
+
+    .pillar-points {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+      margin-top: 24px;
+    }
+
+    .pillar-point {
+      background: var(--cream); border-radius: 8px;
+      padding: 16px 18px; font-size: 13px; color: var(--charcoal);
+      border-left: 3px solid var(--green-light);
+    }
+
+    /* Why Localisation */
+    .why-section { background: var(--cream); }
+
+    .why-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
+      align-items: center;
+    }
+
+    .why-content h2 { margin-bottom: 20px; }
+    .why-content p { margin-bottom: 16px; }
+
+    .why-highlights {
+      display: flex; flex-direction: column; gap: 2px;
+    }
+
+    .why-highlight {
+      background: white; padding: 24px 28px;
+      border-radius: 0;
+    }
+    .why-highlight:first-child { border-radius: 10px 10px 0 0; }
+    .why-highlight:last-child { border-radius: 0 0 10px 10px; }
+
+    .why-highlight h4 {
+      font-size: 15px; font-weight: 600; margin-bottom: 6px;
+      color: var(--charcoal);
+    }
+
+    .why-highlight p { font-size: 13px; }
+
+    /* ═══════════════════════════════════════════════════════
+       PROJECTS PAGE
+    ═══════════════════════════════════════════════════════ */
+
+    .projects-filter {
+      display: flex; gap: 10px; flex-wrap: wrap;
+      padding: 40px 0 0;
+    }
+
+    .filter-btn {
+      padding: 8px 18px; border-radius: 100px;
+      font-size: 12px; font-weight: 600; letter-spacing: 0.06em;
+      text-transform: uppercase; cursor: pointer;
+      border: 1.5px solid var(--border);
+      background: white; color: var(--mid-grey);
+      transition: all 0.2s;
+    }
+
+    .filter-btn.active, .filter-btn:hover {
+      background: var(--green-dark); color: white; border-color: var(--green-dark);
+    }
+
+    .projects-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 2px; margin-top: 40px;
+    }
+
+    .project-card {
+      background: var(--cream); padding: 36px 32px;
+      display: flex; flex-direction: column;
+    }
+    .project-card:nth-child(1) { border-radius: 12px 0 0 0; }
+    .project-card:nth-child(2) { border-radius: 0; }
+    .project-card:nth-child(3) { border-radius: 0 12px 0 0; }
+    .project-card:nth-child(4) { border-radius: 0 0 0 12px; }
+    .project-card:nth-child(5) { border-radius: 0; }
+    .project-card:nth-child(6) { border-radius: 0 0 12px 0; }
+
+    .project-tag {
+      display: inline-block; font-size: 10px; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--green-mid); background: rgba(45,106,79,0.1);
+      padding: 4px 10px; border-radius: 100px; margin-bottom: 16px;
+      align-self: flex-start;
+    }
+
+    .project-card h3 { font-size: 17px; margin-bottom: 12px; }
+    .project-card p { font-size: 13px; line-height: 1.7; flex: 1; }
+
+    .project-meta {
+      display: flex; align-items: center; gap: 16px;
+      margin-top: 24px; padding-top: 20px;
+      border-top: 1px solid var(--border);
+    }
+
+    .project-meta span {
+      font-size: 12px; color: var(--mid-grey);
+      display: flex; align-items: center; gap: 6px;
+    }
+
+    /* Partners full */
+    .partners-full { background: var(--cream); }
+
+    .partners-intro { text-align: center; margin-bottom: 60px; }
+    .partners-intro h2 { margin-bottom: 14px; }
+
+    .partners-row {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 2px; margin-bottom: 2px;
+    }
+
+    .partner-card {
+      background: white; padding: 36px 32px;
+    }
+
+    .partner-card .partner-col-label { margin-bottom: 10px; }
+    .partner-card h4 { font-size: 16px; margin-bottom: 6px; font-family: 'Lora',serif; }
+    .partner-card p { font-size: 13px; }
+
+    /* ═══════════════════════════════════════════════════════
+       PUBLICATIONS PAGE
+    ═══════════════════════════════════════════════════════ */
+
+    .pub-list {
+      display: flex; flex-direction: column; gap: 2px; margin-top: 50px;
+    }
+
+    .pub-item {
+      background: var(--cream); padding: 36px 40px;
+      display: grid; grid-template-columns: 60px 1fr auto;
+      gap: 32px; align-items: center;
+      transition: background 0.2s; cursor: pointer;
+    }
+    .pub-item:first-child { border-radius: 12px 12px 0 0; }
+    .pub-item:last-child { border-radius: 0 0 12px 12px; }
+    .pub-item:hover { background: var(--green-dark); }
+    .pub-item:hover .pub-year, .pub-item:hover h4,
+    .pub-item:hover .pub-type, .pub-item:hover p { color: rgba(255,255,255,0.8); }
+    .pub-item:hover h4 { color: white; }
+    .pub-item:hover .pub-arrow { color: white; }
+
+    .pub-year {
+      font-size: 12px; font-weight: 600; color: var(--ochre);
+      text-align: center; transition: color 0.2s;
+    }
+
+    .pub-body h4 {
+      font-size: 16px; font-family: 'Lora', serif;
+      margin-bottom: 6px; transition: color 0.2s;
+    }
+
+    .pub-type {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--mid-grey);
+      transition: color 0.2s;
+    }
+
+    .pub-body p { font-size: 13px; margin-top: 6px; transition: color 0.2s; }
+
+    .pub-arrow {
+      font-size: 20px; color: var(--mid-grey);
+      transition: color 0.2s;
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       CONTACT PAGE
+    ═══════════════════════════════════════════════════════ */
+
+    .contact-layout {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 2px; margin-top: 60px;
+    }
+
+    .contact-info {
+      background: var(--green-dark); padding: 60px 48px;
+      border-radius: 12px 0 0 12px;
+    }
+
+    .contact-info h3 { color: white; margin-bottom: 30px; }
+
+    .contact-detail {
+      margin-bottom: 32px;
+    }
+
+    .contact-detail .detail-label {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--ochre); margin-bottom: 6px;
+    }
+
+    .contact-detail p { color: rgba(255,255,255,0.75); font-size: 15px; }
+
+    .contact-divider {
+      height: 1px; background: rgba(255,255,255,0.12); margin: 32px 0;
+    }
+
+    .contact-form-wrap {
+      background: var(--cream); padding: 60px 48px;
+      border-radius: 0 12px 12px 0;
+    }
+
+    .form-group { margin-bottom: 24px; }
+
+    label {
+      display: block; font-size: 12px; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--charcoal); margin-bottom: 8px;
+    }
+
+    input, select, textarea {
+      width: 100%; padding: 13px 16px;
+      font-family: 'Inter', sans-serif; font-size: 14px;
+      background: white; border: 1.5px solid var(--border);
+      border-radius: 6px; color: var(--charcoal);
+      transition: border-color 0.2s; outline: none;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--green-mid);
+    }
+
+    textarea { resize: vertical; min-height: 120px; }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+    .form-submit {
+      width: 100%; padding: 15px;
+      background: var(--green-dark); color: white;
+      border: none; border-radius: 6px;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px; font-weight: 600;
+      cursor: pointer; transition: background 0.2s;
+    }
+    .form-submit:hover { background: var(--green-mid); }
+
+    /* ═══════════════════════════════════════════════════════
+       FOOTER
+    ═══════════════════════════════════════════════════════ */
+
+    footer {
+      background: var(--charcoal); padding: 64px 0 32px;
+    }
+
+    .footer-grid {
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px; margin-bottom: 48px;
+    }
+
+    .footer-brand p {
+      font-size: 13px; color: rgba(255,255,255,0.45);
+      margin-top: 16px; line-height: 1.7; max-width: 280px;
+    }
+
+    .footer-logo {
+      display: flex; align-items: center; gap: 10px;
+      color: white; font-weight: 700; font-size: 13px;
+      letter-spacing: 0.08em; text-transform: uppercase;
+    }
+
+    .footer-logo-mark {
+      width: 30px; height: 30px; border-radius: 5px;
+      background: var(--green-mid);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700; color: white;
+    }
+
+    .footer-col h4 {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.14em;
+      text-transform: uppercase; color: rgba(255,255,255,0.4);
+      margin-bottom: 18px; font-family: 'Inter', sans-serif;
+    }
+
+    .footer-col ul { list-style: none; }
+    .footer-col li { margin-bottom: 10px; }
+    .footer-col li a {
+      font-size: 13px; color: rgba(255,255,255,0.6);
+      cursor: pointer; transition: color 0.2s;
+    }
+    .footer-col li a:hover { color: white; }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding-top: 28px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+
+    .footer-bottom p {
+      font-size: 12px; color: rgba(255,255,255,0.3);
+    }
+
+    /* ─── RESPONSIVE ──────────────────────────────────────── */
+    /* ═══════════════════════════════════════════════════════
+       ABOUT PAGE
+    ═══════════════════════════════════════════════════════ */
+
+    /* Mission & Vision split */
+    .mv-split {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 2px; margin-top: 56px;
+    }
+
+    .mv-card {
+      padding: 56px 48px;
+    }
+
+    .mv-card.vision {
+      background: var(--green-dark); border-radius: 12px 0 0 12px;
+    }
+
+    .mv-card.mission {
+      background: var(--cream); border-radius: 0 12px 12px 0;
+    }
+
+    .mv-card.vision .label { color: var(--ochre); }
+    .mv-card.vision h3 { color: white; font-size: 22px; margin-bottom: 20px; }
+    .mv-card.vision p { color: rgba(255,255,255,0.75); font-size: 16px; font-family: 'Lora', serif; font-style: italic; line-height: 1.85; }
+
+    .mv-card.mission .label { color: var(--ochre); }
+    .mv-card.mission h3 { font-size: 22px; margin-bottom: 20px; color: var(--charcoal); }
+    .mv-card.mission p { font-size: 15px; line-height: 1.85; }
+
+    /* Values strip */
+    .values-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 2px; margin-top: 56px;
+    }
+
+    .value-card {
+      background: var(--cream); padding: 36px 28px;
+    }
+    .value-card:first-child { border-radius: 12px 0 0 12px; }
+    .value-card:last-child { border-radius: 0 12px 12px 0; }
+
+    .value-icon { font-size: 28px; margin-bottom: 16px; }
+    .value-card h4 { font-size: 15px; font-weight: 600; margin-bottom: 10px; color: var(--charcoal); font-family: 'Lora', serif; }
+    .value-card p { font-size: 13px; }
+
+    /* People grids */
+    .board-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 2px; margin-top: 50px;
+    }
+
+    .person-card {
+      background: var(--cream); padding: 40px 32px;
+      display: flex; flex-direction: column;
+    }
+    .person-card:nth-child(1) { border-radius: 12px 0 0 0; }
+    .person-card:nth-child(2), .person-card:nth-child(3) { border-radius: 0; }
+    .person-card:nth-child(3) { border-radius: 0 12px 0 0; }
+    .person-card:nth-child(4) { border-radius: 0 0 0 12px; }
+    .person-card:last-child { border-radius: 0 0 12px 0; }
+
+    .person-avatar {
+      width: 64px; height: 64px; border-radius: 50%;
+      background: var(--green-dark); margin-bottom: 20px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; font-weight: 700; color: white;
+      font-family: 'Lora', serif; flex-shrink: 0;
+    }
+
+    .person-card h4 { font-size: 16px; margin-bottom: 4px; font-family: 'Lora', serif; }
+    .person-card .person-role {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--ochre); margin-bottom: 14px;
+    }
+    .person-card p { font-size: 13px; line-height: 1.7; }
+
+    .team-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 2px; margin-top: 50px;
+    }
+
+    .team-card {
+      background: white; padding: 32px 24px;
+      display: flex; flex-direction: column; align-items: flex-start;
+      border: 1px solid var(--border);
+    }
+    .team-card:first-child { border-radius: 12px 0 0 0; }
+    .team-card:nth-child(4) { border-radius: 0 12px 0 0; }
+    .team-card:nth-child(5) { border-radius: 0 0 0 12px; }
+    .team-card:last-child { border-radius: 0 0 12px 0; }
+
+    .team-avatar {
+      width: 52px; height: 52px; border-radius: 50%;
+      background: var(--cream); border: 2px solid var(--border);
+      margin-bottom: 16px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 17px; font-weight: 700; color: var(--green-dark);
+      font-family: 'Lora', serif;
+    }
+
+    .team-card h4 { font-size: 14px; font-weight: 600; margin-bottom: 4px; color: var(--charcoal); }
+    .team-card .team-role {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--green-mid); margin-bottom: 10px;
+    }
+    .team-card p { font-size: 12px; color: var(--mid-grey); line-height: 1.6; }
+
+    @media (max-width: 768px) {
+      nav { padding: 0 20px; }
+      .nav-links { display: none; }
+      .hero { grid-template-columns: 1fr; }
+      .hero-visual { display: none; }
+      .hero-content { padding: 40px 20px; }
+      .container, .container-wide { padding: 0 20px; }
+      .who-grid, .nas-grid, .partners-cols, .serve-split,
+      .approach-intro, .why-grid, .contact-layout,
+      .services-grid, .projects-grid, .partners-row { grid-template-columns: 1fr; }
+      .nas-card, .partner-col, .service-card, .project-card { border-radius: 0 !important; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .pub-item { grid-template-columns: 1fr; }
+      .hero-btns { flex-direction: column; }
+      .cta-inner { flex-direction: column; text-align: center; }
+      .pillar { grid-template-columns: 1fr; }
+      .pillar-points { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── NAVIGATION ───────────────────────────────────────── -->
+<nav id="main-nav">
+  <div class="nav-logo" onclick="showPage('home')">
+    <div class="nav-logo-mark">CRS</div>
+    Community Resource Systems
+  </div>
+  <ul class="nav-links">
+    <li><a onclick="showPage('about')" data-page="about">About</a></li>
+    <li><a onclick="showPage('services')" data-page="services">Services</a></li>
+    <li><a onclick="showPage('approach')" data-page="approach">Approach</a></li>
+    <li><a onclick="showPage('projects')" data-page="projects">Projects</a></li>
+    <li><a onclick="showPage('publications')" data-page="publications">Publications</a></li>
+    <li><a onclick="showPage('contact')" data-page="contact" class="nav-cta">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════
+     HOME PAGE
+════════════════════════════════════════════════════════ -->
+<div id="page-home" class="page active">
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="label" data-cms="home.hero.label">Localisation Consultancy · Ghana</div>
+      <h1><span data-cms="home.hero.title" style="color:inherit">Development that</span> <span data-cms="home.hero.highlight">starts with communities</span></h1>
+      <p class="lead" data-cms="home.hero.lead">
+        CRS bridges international development partners with underserved communities in Ghana — mapping real needs, recognising hidden assets, and building systems that last.
+      </p>
+      <div class="hero-btns">
+        <button class="btn btn-primary" onclick="showPage('approach')">Our Framework →</button>
+        <button class="btn btn-outline" onclick="showPage('contact')">Partner With Us</button>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="hero-stat-grid">
+        <div class="hero-stat">
+          <div class="number">NAS</div>
+          <div class="desc">Needs · Assets · Systems</div>
+        </div>
+        <div class="hero-stat">
+          <div class="number">3+</div>
+          <div class="desc">Partner Types Served</div>
+        </div>
+        <div class="hero-stat">
+          <div class="number">GH</div>
+          <div class="desc">Community-rooted, Ghana-based</div>
+        </div>
+        <div class="hero-stat">
+          <div class="number">100%</div>
+          <div class="desc">Locally Led Engagements</div>
+        </div>
+      </div>
+      <div class="hero-badge">
+        <div class="hero-badge-dot"></div>
+        <p>Aligned with the Grand Bargain, USAID Local Works, and FCDO localisation commitments</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Who We Are -->
+  <section class="who-strip">
+    <div class="container">
+      <div class="who-grid">
+        <div class="who-text">
+          <div class="label" data-cms="home.who.label">Who We Are</div>
+          <h2 data-cms="home.who.title">A trusted intermediary between partners and communities</h2>
+          <div class="divider"></div>
+          <p data-cms="home.who.p1">Community Resource Systems is a localization advisory organization based in Ghana. We act as the essential link between international development partners and the communities they aim to serve — deeply rooted in local realities and fluent in the language of development.</p>
+          <p data-cms="home.who.p2">Our conviction is simple: sustainable development does not come from the outside in. It starts by understanding what communities truly need, recognizing what they already have, and building systems that allow them to thrive beyond external aid.</p>
+          <button class="btn btn-outline" onclick="showPage('services')" style="margin-top:12px">View Our Services →</button>
+        </div>
+        <div>
+          <div class="who-quote">
+            <p data-cms="home.who.quote">"Sustainable development does not come from the outside in. It comes from understanding what communities need, recognizing what they already have, and building systems that allow them to thrive."</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NAS Framework teaser -->
+  <section class="section nas-section">
+    <div class="container">
+      <div class="label">Our Framework</div>
+      <h2>Needs · Assets · Systems</h2>
+      <p style="max-width:580px; margin-top:14px;" data-cms="home.nas.intro">Every engagement is structured around three interconnected pillars that together form a complete picture of community context and potential.</p>
+
+      <div class="nas-grid">
+        <div class="nas-card">
+          <div class="nas-icon">🔍</div>
+          <h3 data-cms="home.nas.needs.title">Needs</h3>
+          <p data-cms="home.nas.needs.desc">We conduct rigorous, participatory assessments to understand what communities actually require — not what partners assume they need.</p>
+        </div>
+        <div class="nas-card">
+          <div class="nas-icon">💎</div>
+          <h3 data-cms="home.nas.assets.title">Assets</h3>
+          <p data-cms="home.nas.assets.desc">We map resources communities already hold: knowledge, networks, land, skills, and social capital that external partners often overlook.</p>
+        </div>
+        <div class="nas-card">
+          <div class="nas-icon">⚙️</div>
+          <h3 data-cms="home.nas.systems.title">Systems</h3>
+          <p data-cms="home.nas.systems.desc">We help design and strengthen local systems — governance, supply chains, accountability structures — that sustain outcomes beyond any single project.</p>
+        </div>
+      </div>
+
+      <div style="margin-top:40px; text-align:center;">
+        <button class="btn btn-primary" onclick="showPage('approach')">Explore Our Approach →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Partners teaser -->
+  <section class="section partners-section">
+    <div class="container">
+      <div class="partners-header">
+        <div class="label">Who We Work With</div>
+        <h2 data-cms="home.partners.title">Partners across sectors</h2>
+        <p style="color:var(--mid-grey); max-width:520px; margin:0 auto; margin-top:12px;" data-cms="home.partners.intro">CRS engages with a diverse ecosystem of partners — from government ministries to multilateral donors to community-based organisations.</p>
+      </div>
+
+      <div class="partners-cols" id="partners-cols"></div>
+    </div>
+  </section>
+
+  <!-- CTA Band -->
+  <section class="cta-band">
+    <div class="container">
+      <div class="cta-inner">
+        <div class="cta-text">
+          <h2>Ready to localise your programme?</h2>
+          <p>Whether you are designing a new intervention or strengthening an existing one, CRS can help you engage communities as genuine partners — not just beneficiaries.</p>
+        </div>
+        <div style="display:flex; gap:14px; flex-shrink:0;">
+          <button class="btn btn-light" onclick="showPage('contact')">Get in Touch</button>
+          <button class="btn btn-outline" style="color:white; border-color:rgba(255,255,255,0.4);" onclick="showPage('services')">Our Services</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <div class="footer-logo-mark">CRS</div>
+            Community Resource Systems
+          </div>
+          <p data-cms="footer.tagline">Localisation consultancy providing rigorous community engagement for development partners in Ghana and across West Africa.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Navigation</h4>
+          <ul>
+            <li><a onclick="showPage('home')">Home</a></li>
+            <li><a onclick="showPage('about')">About</a></li>
+            <li><a onclick="showPage('services')">Services</a></li>
+            <li><a onclick="showPage('approach')">Approach</a></li>
+            <li><a onclick="showPage('projects')">Projects</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Resources</h4>
+          <ul>
+            <li><a onclick="showPage('publications')">Publications</a></li>
+            <li><a onclick="showPage('approach')">NAS Framework</a></li>
+            <li><a onclick="showPage('projects')">Case Studies</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <ul>
+            <li><a onclick="showPage('contact')">Get in Touch</a></li>
+            <li><a>Accra, Ghana</a></li>
+            <li><a>info@crs-ghana.org</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 Community Resource Systems. All rights reserved.</p>
+        <p>International partnerships, community-led solutions.</p>
+      </div>
+    </div>
+  </footer>
+
+</div><!-- /page-home -->
+
+
+<!-- ═══════════════════════════════════════════════════════
+     SERVICES PAGE
+════════════════════════════════════════════════════════ -->
+<div id="page-services" class="page">
+
+  <div class="page-hero">
+    <div class="container">
+      <div class="label">What We Offer</div>
+      <h1>Our Services</h1>
+      <p>From needs assessments to system design, CRS provides the full range of localisation advisory services that development partners need to succeed on the ground in Ghana.</p>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="container">
+      <div class="label">Core Services</div>
+      <h2>How we support your work</h2>
+      <div class="divider"></div>
+
+      <div class="services-grid">
+
+        <div class="service-card">
+          <div class="service-number">01</div>
+          <h3>Community Needs Assessment</h3>
+          <p>Rigorous, participatory diagnostic processes that surface the actual priorities of communities — not assumptions imported from headquarters or donor logframes.</p>
+          <ul class="service-features">
+            <li>Household and focus group surveys</li>
+            <li>Gender-disaggregated data collection</li>
+            <li>Seasonal calendars and vulnerability mapping</li>
+            <li>Community validation workshops</li>
+          </ul>
+        </div>
+
+        <div class="service-card">
+          <div class="service-number">02</div>
+          <h3>Asset Mapping</h3>
+          <p>A structured inventory of the human, social, physical, financial, and natural capital that communities already possess — enabling asset-based rather than deficit-driven programming.</p>
+          <ul class="service-features">
+            <li>Community Asset Register development</li>
+            <li>Social network and trust mapping</li>
+            <li>Indigenous knowledge documentation</li>
+            <li>Land and natural resource profiling</li>
+          </ul>
+        </div>
+
+        <div class="service-card">
+          <div class="service-number">03</div>
+          <h3>Systems Design & Strengthening</h3>
+          <p>Co-designing local governance, accountability, and delivery systems that can sustain development outcomes long after external funding has ended.</p>
+          <ul class="service-features">
+            <li>Community governance structures</li>
+            <li>Local supply chain mapping</li>
+            <li>Accountability and feedback mechanisms</li>
+            <li>Sustainability transition planning</li>
+          </ul>
+        </div>
+
+        <div class="service-card">
+          <div class="service-number">04</div>
+          <h3>Localisation Advisory</h3>
+          <p>Strategic counsel for international NGOs, donors, and implementing partners seeking to genuinely transfer power and resources to local actors in Ghana.</p>
+          <ul class="service-features">
+            <li>Local partner identification and vetting</li>
+            <li>Capacity gap assessments</li>
+            <li>Sub-granting and partnership design</li>
+            <li>Localisation strategy development</li>
+          </ul>
+        </div>
+
+        <div class="service-card">
+          <div class="service-number">05</div>
+          <h3>Programme Design Support</h3>
+          <p>End-to-end support for designing interventions that are rooted in community realities from the outset — reducing costly misalignments during implementation.</p>
+          <ul class="service-features">
+            <li>Theory of Change facilitation</li>
+            <li>Logframe and results framework review</li>
+            <li>Community buy-in sessions</li>
+            <li>Context analysis and conflict sensitivity</li>
+          </ul>
+        </div>
+
+        <div class="service-card">
+          <div class="service-number">06</div>
+          <h3>Monitoring, Evaluation & Learning</h3>
+          <p>Community-centred MEL approaches that treat local participants as evaluators, not just subjects — generating learning that improves programmes in real time.</p>
+          <ul class="service-features">
+            <li>Participatory MEL framework design</li>
+            <li>Citizen-led data collection training</li>
+            <li>Mid-term and end-line evaluations</li>
+            <li>After-action learning sessions</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Who We Serve -->
+  <section class="section" style="background:var(--cream); padding-top:0;">
+    <div class="container">
+      <div class="label">Who We Serve</div>
+      <h2>Two audiences. One mission.</h2>
+      <p style="max-width:560px; margin-top:12px;">CRS delivers value by earning the trust of both international partners and the communities they work with. Our credibility with one strengthens our effectiveness with the other.</p>
+
+      <div class="serve-split">
+        <div class="serve-card dark">
+          <div class="label">For International Partners</div>
+          <h3>Local expertise you can trust</h3>
+          <ul class="serve-list">
+            <li style="border-color:rgba(255,255,255,0.12); color:rgba(255,255,255,0.75)">Deep knowledge of terrain, people, and local politics</li>
+            <li style="border-color:rgba(255,255,255,0.12); color:rgba(255,255,255,0.75)">Rigorous methodology that reduces implementation risk</li>
+            <li style="border-color:rgba(255,255,255,0.12); color:rgba(255,255,255,0.75)">Community buy-in that increases project success rates</li>
+            <li style="border-color:rgba(255,255,255,0.12); color:rgba(255,255,255,0.75)">Honest assessments that prevent costly misalignments</li>
+            <li style="border-color:rgba(255,255,255,0.12); color:rgba(255,255,255,0.75)">Credibility aligned with global localisation commitments</li>
+          </ul>
+        </div>
+        <div class="serve-card light">
+          <div class="label">For Communities</div>
+          <h3>A voice at the table</h3>
+          <ul class="serve-list">
+            <li>Representation of community interests in partner negotiations</li>
+            <li>Recognition of existing assets — not just deficits</li>
+            <li>Interventions designed with you, not for you</li>
+            <li>A pathway toward self-sufficiency and reduced aid dependence</li>
+            <li>Accountable engagement that respects local knowledge</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-band">
+    <div class="container">
+      <div class="cta-inner">
+        <div class="cta-text">
+          <h2>Let's discuss your programme</h2>
+          <p>We'd welcome a conversation about how CRS can support your next intervention in Ghana or the wider region.</p>
+        </div>
+        <button class="btn btn-light" onclick="showPage('contact')">Get in Touch →</button>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="footer-logo"><div class="footer-logo-mark">CRS</div> Community Resource Systems</div>
+          <p data-cms="footer.tagline">Localisation consultancy providing rigorous community engagement for development partners in Ghana.</p>
+        </div>
+        <div class="footer-col"><h4>Navigation</h4><ul>
+          <li><a onclick="showPage('home')">Home</a></li>
+          <li><a onclick="showPage('about')">About</a></li>
+          <li><a onclick="showPage('services')">Services</a></li>
+          <li><a onclick="showPage('approach')">Approach</a></li>
+          <li><a onclick="showPage('projects')">Projects</a></li>
+        </ul></div>
+        <div class="footer-col"><h4>Resources</h4><ul>
+          <li><a onclick="showPage('publications')">Publications</a></li>
+          <li><a onclick="showPage('approach')">NAS Framework</a></li>
+        </ul></div>
+        <div class="footer-col"><h4>Contact</h4><ul>
+          <li><a onclick="showPage('contact')">Get in Touch</a></li>
+          <li><a>Accra, Ghana</a></li>
+        </ul></div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 Community Resource Systems. All rights reserved.</p>
+        <p>International partnerships, community-led solutions.</p>
+      </div>
+    </div>
+  </footer>
+
+</div><!-- /page-services -->
+
+
+<!-- ═══════════════════════════════════════════════════════
+     APPROACH PAGE
+════════════════════════════════════════════════════════ -->
+<div id="page-approach" class="page">
+
+  <div class="page-hero">
+    <div class="container">
+      <div class="label">How We Work</div>
+      <h1>The NAS Framework</h1>
+      <p>Our proprietary three-pillar model — Needs, Assets, and Systems — provides the most complete picture of community context for any development intervention.</p>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="container">
+
+      <div class="approach-intro">
+        <div>
+          <div class="label">The Foundation</div>
+          <h2>An optimal model for development across all sectors</h2>
+          <div class="divider"></div>
+          <p>Most development programmes either focus exclusively on what communities lack (a deficit lens) or on what they already have (an asset lens). NAS insists both are incomplete on their own.</p>
+          <p>Without understanding needs, asset-based approaches can miss urgent priorities. Without mapping assets, needs assessments generate long wish lists with no foundation for action. Without systems, even excellent diagnostics produce one-off projects that leave no lasting infrastructure.</p>
+          <p>The NAS Framework integrates all three to produce programmes that are grounded, efficient, and durable.</p>
+        </div>
+        <div>
+          <div style="background:var(--green-dark); border-radius:12px; padding:48px 40px;">
+            <div class="label" style="color:var(--ochre);">Our Vision</div>
+            <p style="font-family:'Lora',serif; font-style:italic; font-size:17px; color:rgba(255,255,255,0.9); line-height:1.8; margin-bottom:28px;">
+              "A world where international development consistently strengthens — rather than undermines — local agency, knowledge, and self-determination."
+            </p>
+            <div style="height:1px; background:rgba(255,255,255,0.12); margin-bottom:28px;"></div>
+            <div class="label" style="color:var(--ochre);">Our Mission</div>
+            <p style="font-size:14px; color:rgba(255,255,255,0.7); line-height:1.8;">
+              To help international development partners localize their interventions by providing rigorous needs assessments, asset mapping, and systems design rooted in genuine community partnership.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- The three pillars -->
+      <div class="approach-pillars">
+
+        <div class="pillar">
+          <div class="pillar-num">01</div>
+          <div class="pillar-content">
+            <h3>🔍 Needs <span class="pillar-tag">Pillar One</span></h3>
+            <p>We conduct rigorous, participatory assessments to understand what communities actually require — not what partners assume they need. This means going beyond standard surveys to engage community members as co-investigators of their own context.</p>
+            <p>Needs assessments at CRS are gender-sensitive, seasonally aware, and cross-sector — capturing health, education, economic, and social dimensions simultaneously.</p>
+            <div class="pillar-points">
+              <div class="pillar-point">Household-level surveys with representative sampling</div>
+              <div class="pillar-point">Focus groups disaggregated by gender, age, and status</div>
+              <div class="pillar-point">Seasonal calendars revealing cyclical vulnerability</div>
+              <div class="pillar-point">Community-led priority validation workshops</div>
+              <div class="pillar-point">Cross-sector needs matrix development</div>
+              <div class="pillar-point">Conflict-sensitive data collection protocols</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pillar">
+          <div class="pillar-num">02</div>
+          <div class="pillar-content">
+            <h3>💎 Assets <span class="pillar-tag">Pillar Two</span></h3>
+            <p>We map the full spectrum of resources communities already hold — knowledge, networks, land, skills, financial mechanisms, and social capital that external partners routinely overlook or undervalue.</p>
+            <p>Our Asset Registers go beyond physical infrastructure to capture the intangible but powerful resources that enable communities to act: trust networks, indigenous knowledge systems, and community savings mechanisms.</p>
+            <div class="pillar-points">
+              <div class="pillar-point">Community Asset Register development</div>
+              <div class="pillar-point">Social network and trust mapping</div>
+              <div class="pillar-point">Indigenous knowledge documentation</div>
+              <div class="pillar-point">Land, water, and natural resource profiling</div>
+              <div class="pillar-point">Financial capability assessments (susu, cooperatives)</div>
+              <div class="pillar-point">Skills inventory and vocational mapping</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pillar">
+          <div class="pillar-num">03</div>
+          <div class="pillar-content">
+            <h3>⚙️ Systems <span class="pillar-tag">Pillar Three</span></h3>
+            <p>We help design and strengthen the local systems — governance structures, supply chains, accountability mechanisms — that sustain development outcomes beyond any single project or funding cycle.</p>
+            <p>Systems work is where the durable transformation happens. Without it, projects produce outputs without building the infrastructure for continued self-directed development.</p>
+            <div class="pillar-points">
+              <div class="pillar-point">Community governance structure design</div>
+              <div class="pillar-point">Local supply chain mapping and strengthening</div>
+              <div class="pillar-point">Accountability and grievance mechanisms</div>
+              <div class="pillar-point">Sustainability transition planning</div>
+              <div class="pillar-point">Linkage to formal district governance systems</div>
+              <div class="pillar-point">Exit strategy and local handover protocols</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Localisation -->
+  <section class="section why-section">
+    <div class="container">
+      <div class="why-grid">
+        <div class="why-content">
+          <div class="label">The Context</div>
+          <h2>Why Localisation — Why Now</h2>
+          <div class="divider"></div>
+          <p>The global development sector is undergoing a fundamental shift. Decades of top-down programming have produced fragile results. The localization agenda — championed by the Grand Bargain, USAID's Local Works, and FCDO's policy shifts — calls for placing communities and local organizations at the center of development decisions.</p>
+          <p>CRS is positioned at the intersection of this global shift and local Ghanaian reality. We offer international partners the credibility of rigorous methodology alongside the irreplaceable advantage of being genuinely from and accountable to the communities we work with.</p>
+          <button class="btn btn-primary" onclick="showPage('services')" style="margin-top:20px">Explore Our Services →</button>
+        </div>
+        <div class="why-highlights">
+          <div class="why-highlight">
+            <h4>Grand Bargain Commitment</h4>
+            <p>Signatories committed to passing 25% of humanitarian funding as directly as possible to local organisations.</p>
+          </div>
+          <div class="why-highlight">
+            <h4>USAID Local Works</h4>
+            <p>USAID's flagship local development initiative prioritising indigenous civil society and community-rooted solutions.</p>
+          </div>
+          <div class="why-highlight">
+            <h4>FCDO Localisation Policy</h4>
+            <p>UK Aid's shift toward local systems strengthening — reducing reliance on large international contractors.</p>
+          </div>
+          <div class="why-highlight">
+            <h4>Ghana's Development Agenda</h4>
+            <p>Ghana's own GSGDA and district decentralisation goals align with community-centred programme design.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-band">
+    <div class="container">
+      <div class="cta-inner">
+        <div class="cta-text">
+          <h2>Apply the NAS Framework to your programme</h2>
+          <p>Talk to our team about how the NAS model can strengthen your next intervention.</p>
+        </div>
+        <button class="btn btn-light" onclick="showPage('contact')">Start a Conversation →</button>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand"><div class="footer-logo"><div class="footer-logo-mark">CRS</div> Community Resource Systems</div><p data-cms="footer.tagline">Localisation consultancy providing rigorous community engagement for development partners in Ghana.</p></div>
+        <div class="footer-col"><h4>Navigation</h4><ul><li><a onclick="showPage('home')">Home</a></li><li><a onclick="showPage('about')">About</a></li><li><a onclick="showPage('services')">Services</a></li><li><a onclick="showPage('approach')">Approach</a></li><li><a onclick="showPage('projects')">Projects</a></li></ul></div>
+        <div class="footer-col"><h4>Resources</h4><ul><li><a onclick="showPage('publications')">Publications</a></li><li><a onclick="showPage('approach')">NAS Framework</a></li></ul></div>
+        <div class="footer-col"><h4>Contact</h4><ul><li><a onclick="showPage('contact')">Get in Touch</a></li><li><a>Accra, Ghana</a></li></ul></div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 Community Resource Systems. All rights reserved.</p>
+        <p>International partnerships, community-led solutions.</p>
+      </div>
+    </div>
+  </footer>
+
+</div><!-- /page-approach -->
+
+
+<!-- ═══════════════════════════════════════════════════════
+     PROJECTS PAGE
+════════════════════════════════════════════════════════ -->
+<div id="page-projects" class="page">
+
+  <div class="page-hero">
+    <div class="container">
+      <div class="label">Our Work on the Ground</div>
+      <h1 data-cms="projects.hero.title">Projects & Engagements</h1>
+      <p data-cms="projects.hero.intro">Selected examples of CRS's localisation advisory work across Ghana — from the Northern Savannah to the Greater Accra region.</p>
+    </div>
+  </div>
+
+  <section class="section" id="projects-section" hidden>
+    <div class="container">
+      <div class="label">Featured Projects</div>
+      <h2>Where we've worked</h2>
+      <div id="projects-list" class="projects-grid" style="margin-top:50px;"></div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand"><div class="footer-logo"><div class="footer-logo-mark">CRS</div> Community Resource Systems</div><p data-cms="footer.tagline">Localisation consultancy providing rigorous community engagement for development partners in Ghana.</p></div>
+        <div class="footer-col"><h4>Navigation</h4><ul><li><a onclick="showPage('home')">Home</a></li><li><a onclick="showPage('about')">About</a></li><li><a onclick="showPage('services')">Services</a></li><li><a onclick="showPage('approach')">Approach</a></li><li><a onclick="showPage('projects')">Projects</a></li></ul></div>
+        <div class="footer-col"><h4>Resources</h4><ul><li><a onclick="showPage('publications')">Publications</a></li><li><a onclick="showPage('approach')">NAS Framework</a></li></ul></div>
+        <div class="footer-col"><h4>Contact</h4><ul><li><a onclick="showPage('contact')">Get in Touch</a></li><li><a>Accra, Ghana</a></li></ul></div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 Community Resource Systems. All rights reserved.</p>
+        <p>International partnerships, community-led solutions.</p>
+      </div>
+    </div>
+  </footer>
+
+</div><!-- /page-projects -->
+
+
+<!-- ═══════════════════════════════════════════════════════
+     PUBLICATIONS PAGE
+════════════════════════════════════════════════════════ -->
+<div id="page-publications" class="page">
+
+  <div class="page-hero">
+    <div class="container">
+      <div class="label">Research &amp; Insights</div>
+      <h1 data-cms="publications.hero.title">Publications</h1>
+      <p data-cms="publications.hero.intro">CRS produces practitioner-focused research, tools, and briefings to advance the localisation agenda across the development sector.</p>
+    </div>
+  </div>
+
+  <section class="section" id="publications-section" hidden>
+    <div class="container">
+      <div class="label">All Publications</div>
+      <h2>Reports, briefs &amp; tools</h2>
+      <div id="publications-list" class="pub-list" style="margin-top:32px;"></div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand"><div class="footer-logo"><div class="footer-logo-mark">CRS</div> Community Resource Systems</div><p data-cms="footer.tagline">Localisation consultancy providing rigorous community engagement for development partners in Ghana.</p></div>
+        <div class="footer-col"><h4>Navigation</h4><ul><li><a onclick="showPage('home')">Home</a></li><li><a onclick="showPage('about')">About</a></li><li><a onclick="showPage('services')">Services</a></li><li><a onclick="showPage('approach')">Approach</a></li><li><a onclick="showPage('projects')">Projects</a></li></ul></div>
+        <div class="footer-col"><h4>Resources</h4><ul><li><a onclick="showPage('publications')">Publications</a></li><li><a onclick="showPage('approach')">NAS Framework</a></li></ul></div>
+        <div class="footer-col"><h4>Contact</h4><ul><li><a onclick="showPage('contact')">Get in Touch</a></li><li><a>Accra, Ghana</a></li></ul></div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 Community Resource Systems. All rights reserved.</p>
+        <p>International partnerships, community-led solutions.</p>
+      </div>
+    </div>
+  </footer>
+
+</div><!-- /page-publications -->
+
+
+<!-- ═══════════════════════════════════════════════════════
+     CONTACT PAGE
+════════════════════════════════════════════════════════ -->
+<div id="page-contact" class="page">
+
+  <div class="page-hero">
+    <div class="container">
+      <div class="label">Reach Out</div>
+      <h1>Get in Touch</h1>
+      <p>Whether you are planning a programme, seeking a local partner, or want to understand how CRS can support your work in Ghana — we'd welcome a conversation.</p>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="container">
+
+      <div class="contact-layout">
+        <div class="contact-info">
+          <h3>Community Resource Systems</h3>
+
+          <div class="contact-detail">
+            <div class="detail-label">Location</div>
+            <p>Accra, Ghana<br/>West Africa</p>
+          </div>
+
+          <div class="contact-detail">
+            <div class="detail-label">Email</div>
+            <p>info@crs-ghana.org<br/>partnerships@crs-ghana.org</p>
+          </div>
+
+          <div class="contact-detail">
+            <div class="detail-label">For Partnerships</div>
+            <p>We welcome inquiries from international development partners, donors, and community organisations across Ghana and the wider West Africa region.</p>
+          </div>
+
+          <div class="contact-divider"></div>
+
+          <div class="contact-detail">
+            <div class="detail-label">Our Focus Areas</div>
+            <p style="color:rgba(255,255,255,0.75); font-size:14px; line-height:1.8;">
+              Needs Assessment · Asset Mapping · Systems Design · Localisation Advisory · Programme Design · MEL
+            </p>
+          </div>
+
+          <div class="contact-detail">
+            <div class="detail-label">Regional Coverage</div>
+            <p style="color:rgba(255,255,255,0.75); font-size:14px; line-height:1.8;">
+              Greater Accra · Ashanti · Volta · Eastern · Northern · Upper West · Upper East · Savannah · Bono · North East
+            </p>
+          </div>
+        </div>
+
+        <div class="contact-form-wrap">
+          <div class="label" style="color:var(--ochre);">Send Us a Message</div>
+          <h3 style="margin-bottom:28px; font-size:22px;">How can we help?</h3>
+
+          <form onsubmit="handleSubmit(event)">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="fname">First Name</label>
+                <input type="text" id="fname" placeholder="Ebo" required/>
+              </div>
+              <div class="form-group">
+                <label for="lname">Last Name</label>
+                <input type="text" id="lname" placeholder="Mensah" required/>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email Address</label>
+              <input type="email" id="email" placeholder="you@organisation.org" required/>
+            </div>
+
+            <div class="form-group">
+              <label for="org">Organisation</label>
+              <input type="text" id="org" placeholder="Your organisation name"/>
+            </div>
+
+            <div class="form-group">
+              <label for="type">Type of Enquiry</label>
+              <select id="type">
+                <option value="">Select an option</option>
+                <option>Partnership / Programme Support</option>
+                <option>Needs Assessment</option>
+                <option>Asset Mapping</option>
+                <option>Systems Design</option>
+                <option>MEL Support</option>
+                <option>Publications / Research</option>
+                <option>General Enquiry</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="message">Your Message</label>
+              <textarea id="message" placeholder="Tell us about your programme, your context in Ghana, and what you need..." required></textarea>
+            </div>
+
+            <button type="submit" class="form-submit">Send Message →</button>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand"><div class="footer-logo"><div class="footer-logo-mark">CRS</div> Community Resource Systems</div><p data-cms="footer.tagline">Localisation consultancy providing rigorous community engagement for development partners in Ghana.</p></div>
+        <div class="footer-col"><h4>Navigation</h4><ul><li><a onclick="showPage('home')">Home</a></li><li><a onclick="showPage('about')">About</a></li><li><a onclick="showPage('services')">Services</a></li><li><a onclick="showPage('approach')">Approach</a></li><li><a onclick="showPage('projects')">Projects</a></li></ul></div>
+        <div class="footer-col"><h4>Resources</h4><ul><li><a onclick="showPage('publications')">Publications</a></li><li><a onclick="showPage('approach')">NAS Framework</a></li></ul></div>
+        <div class="footer-col"><h4>Contact</h4><ul><li><a onclick="showPage('contact')">Get in Touch</a></li><li><a>Accra, Ghana</a></li></ul></div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 Community Resource Systems. All rights reserved.</p>
+        <p>International partnerships, community-led solutions.</p>
+      </div>
+    </div>
+  </footer>
+
+</div><!-- /page-contact -->
+
+
+<!-- ═══════════════════════════════════════════════════════
+     ABOUT PAGE
+════════════════════════════════════════════════════════ -->
+<div id="page-about" class="page">
+
+  <div class="page-hero">
+    <div class="container">
+      <div class="label">Who We Are</div>
+      <h1>About CRS</h1>
+      <p>Community Resource Systems is a localisation advisory organisation rooted in Ghana — bridging international development partners with the communities they serve through rigorous methodology and genuine accountability.</p>
+    </div>
+  </div>
+
+  <!-- Mission & Vision -->
+  <section class="section">
+    <div class="container">
+      <div class="label">Our Purpose</div>
+      <h2>Mission &amp; Vision</h2>
+      <p style="max-width:560px; margin-top:12px;">Everything CRS does flows from a clear conviction: that sustainable development is only possible when it is driven by the people it intends to serve.</p>
+
+      <div class="mv-split">
+        <div class="mv-card vision">
+          <div class="label">Vision</div>
+          <h3>What we are working toward</h3>
+          <p>"A world where international development consistently strengthens — rather than undermines — local agency, knowledge, and self-determination."</p>
+        </div>
+        <div class="mv-card mission">
+          <div class="label">Mission</div>
+          <h3>How we get there</h3>
+          <p>To help international development partners localise their interventions by providing rigorous needs assessments, asset mapping, and systems design rooted in genuine community partnership.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Core Values -->
+  <section class="section-sm" style="background:var(--paper); padding-bottom:80px;">
+    <div class="container">
+      <div class="label">Our Values</div>
+      <h2>What guides our work</h2>
+
+      <div class="values-grid">
+        <div class="value-card">
+          <div class="value-icon">🌱</div>
+          <h4>Community First</h4>
+          <p>Every engagement is designed to serve community interests — not just project deliverables or donor logframes.</p>
+        </div>
+        <div class="value-card">
+          <div class="value-icon">🔍</div>
+          <h4>Rigorous Honesty</h4>
+          <p>We provide partners with honest assessments, even when the findings are inconvenient or complicate programme design.</p>
+        </div>
+        <div class="value-card">
+          <div class="value-icon">🤝</div>
+          <h4>Genuine Partnership</h4>
+          <p>We treat communities as co-investigators and co-designers — not subjects, beneficiaries, or passive recipients.</p>
+        </div>
+        <div class="value-card">
+          <div class="value-icon">♻️</div>
+          <h4>Lasting Systems</h4>
+          <p>We measure success by what endures after our engagement ends — the systems, structures, and capacity that remain.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Board of Directors -->
+  <section class="section" style="background:var(--cream);">
+    <div class="container">
+      <div class="label">Governance</div>
+      <h2>Board of Directors</h2>
+      <p style="max-width:540px; margin-top:12px;" data-cms="about.trustees.intro">CRS is governed by a voluntary Board of Directors who provide strategic oversight, fiduciary stewardship, and independent guidance on a pro bono basis — bringing together expertise across the public, private, legal, academic, and development sectors.</p>
+
+      <div class="board-grid" id="trustees-grid"></div>
+    </div>
+  </section>
+
+  <!-- Management Team -->
+  <section class="section">
+    <div class="container">
+      <div class="label">The Team</div>
+      <h2>Management &amp; Advisory Staff</h2>
+      <p style="max-width:560px; margin-top:12px;" data-cms="about.management.intro">Our core team combines deep community embeddedness with the technical rigour demanded by international development standards — the combination that makes CRS uniquely effective.</p>
+
+      <div class="team-grid" id="management-grid"></div>
+    </div>
+  </section>
+
+  <!-- Story / Why CRS -->
+  <section class="section" style="background:var(--cream);">
+    <div class="container">
+      <div class="who-grid">
+        <div class="who-text">
+          <div class="label">Our Story</div>
+          <h2>Why Community Resource Systems exists</h2>
+          <div class="divider"></div>
+          <p data-cms="about.story.p1">CRS was founded in response to a recurring pattern observed across development programmes in Ghana: well-resourced international partners arriving with pre-designed solutions for communities whose actual needs, assets, and governance structures they had never meaningfully engaged with.</p>
+          <p data-cms="about.story.p2">The result was predictable — costly misalignments, low community ownership, and projects that produced outputs without building any lasting capacity or infrastructure.</p>
+          <p data-cms="about.story.p3">CRS was built to solve this at the source — acting as a trusted intermediary that ensures no development partner has to work in Ghana without genuine community insight, and no community has to receive development without a meaningful voice in its design.</p>
+          <button class="btn btn-outline" onclick="showPage('approach')" style="margin-top:12px;">Our NAS Framework →</button>
+        </div>
+        <div>
+          <div class="who-quote">
+            <p data-cms="about.story.quote">"We are not a bridge that carries partners into communities. We are a bridge that carries communities into the decisions that affect them."</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-band">
+    <div class="container">
+      <div class="cta-inner">
+        <div class="cta-text">
+          <h2>Work with the CRS team</h2>
+          <p>Whether for a single diagnostic or a multi-year programme partnership, our team is ready to support your localisation journey in Ghana.</p>
+        </div>
+        <button class="btn btn-light" onclick="showPage('contact')">Get in Touch →</button>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="footer-logo"><div class="footer-logo-mark">CRS</div> Community Resource Systems</div>
+          <p data-cms="footer.tagline">Localisation consultancy providing rigorous community engagement for development partners in Ghana.</p>
+        </div>
+        <div class="footer-col"><h4>Navigation</h4><ul>
+          <li><a onclick="showPage('home')">Home</a></li>
+          <li><a onclick="showPage('about')">About</a></li>
+          <li><a onclick="showPage('services')">Services</a></li>
+          <li><a onclick="showPage('approach')">Approach</a></li>
+          <li><a onclick="showPage('projects')">Projects</a></li>
+        </ul></div>
+        <div class="footer-col"><h4>Resources</h4><ul>
+          <li><a onclick="showPage('publications')">Publications</a></li>
+          <li><a onclick="showPage('approach')">NAS Framework</a></li>
+          <li><a onclick="showPage('projects')">Case Studies</a></li>
+        </ul></div>
+        <div class="footer-col"><h4>Contact</h4><ul>
+          <li><a onclick="showPage('contact')">Get in Touch</a></li>
+          <li><a>Accra, Ghana</a></li>
+          <li><a>info@crs-ghana.org</a></li>
+        </ul></div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 Community Resource Systems. All rights reserved.</p>
+        <p>International partnerships, community-led solutions.</p>
+      </div>
+    </div>
+  </footer>
+
+</div><!-- /page-about -->
+
+
+<!-- ═══════════════════════════════════════════════════════
+     JAVASCRIPT
+════════════════════════════════════════════════════════ -->
+<script>
+  function showPage(name) {
+    // Hide all pages
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    // Show target
+    const target = document.getElementById('page-' + name);
+    if (target) {
+      target.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    // Update nav active state
+    document.querySelectorAll('.nav-links a[data-page]').forEach(a => {
+      a.classList.toggle('active', a.dataset.page === name);
+    });
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('.form-submit');
+    btn.textContent = 'Message sent ✓';
+    btn.style.background = 'var(--green-mid)';
+    setTimeout(() => {
+      btn.textContent = 'Send Message →';
+      btn.style.background = '';
+      e.target.reset();
+    }, 3000);
+  }
+
+  // Smooth nav highlight on scroll (home page only)
+  window.addEventListener('scroll', () => {
+    const nav = document.getElementById('main-nav');
+    if (window.scrollY > 20) {
+      nav.style.boxShadow = '0 2px 24px rgba(0,0,0,0.07)';
+    } else {
+      nav.style.boxShadow = 'none';
+    }
+  });
+
+  /* ==========================================================
+     DYNAMIC CONTENT — pulled from the backend admin
+     ========================================================== */
+  function esc(str) {
+    if (str == null) return '';
+    return String(str)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+  function applyContent(map) {
+    document.querySelectorAll('[data-cms]').forEach((el) => {
+      const k = el.getAttribute('data-cms');
+      if (map && map[k] != null && String(map[k]).trim() !== '') el.textContent = map[k];
+    });
+  }
+  function avatar(p, cls) {
+    if (p.photo_path) {
+      return `<div class="${cls}" style="overflow:hidden; padding:0;"><img src="${esc(p.photo_path)}" alt="${esc(p.name)}" style="width:100%; height:100%; object-fit:cover;"></div>`;
+    }
+    return `<div class="${cls}">${esc(p.initials || (p.name || '?').slice(0,2).toUpperCase())}</div>`;
+  }
+  function renderTeam(data) {
+    const tg = document.getElementById('trustees-grid');
+    if (tg && data.trustees) tg.innerHTML = data.trustees.map((m) => `
+      <div class="person-card">
+        ${avatar(m, 'person-avatar')}
+        <h4>${esc(m.name)}</h4>
+        ${m.role ? `<div class="person-role">${esc(m.role)}</div>` : ''}
+        ${m.bio ? `<p>${esc(m.bio)}</p>` : ''}
+      </div>`).join('');
+    const mg = document.getElementById('management-grid');
+    if (mg && data.management) mg.innerHTML = data.management.map((m) => `
+      <div class="team-card">
+        ${avatar(m, 'team-avatar')}
+        <h4>${esc(m.name)}</h4>
+        ${m.role ? `<div class="team-role">${esc(m.role)}</div>` : ''}
+        ${m.bio ? `<p>${esc(m.bio)}</p>` : ''}
+      </div>`).join('');
+  }
+  function renderPartners(data) {
+    const wrap = document.getElementById('partners-cols');
+    if (!wrap) return;
+    const cols = [
+      ['Government', data.government || []],
+      ['Development Cooperation', data.development || []],
+      ['Communities', data.community || []],
+    ];
+    wrap.innerHTML = cols.map(([label, items]) => `
+      <div class="partner-col">
+        <div class="partner-col-label">${esc(label)}</div>
+        ${items.map((p) => `<div class="partner-item"><div class="partner-dot"></div><p>${esc(p.name)}</p></div>`).join('')}
+      </div>`).join('');
+  }
+  function renderProjects(items) {
+    const section = document.getElementById('projects-section');
+    const list = document.getElementById('projects-list');
+    if (!section || !list) return;
+    if (!items.length) { section.hidden = true; return; }
+    section.hidden = false;
+    list.innerHTML = items.map((p) => {
+      const imgs = p.images || [];
+      const cover = imgs.length ? `<img src="${esc(imgs[0].file_path)}" alt="${esc(p.title)}" style="width:100%; height:190px; object-fit:cover; border-radius:8px; margin-bottom:18px;">` : '';
+      const thumbs = imgs.length > 1 ? `<div style="display:flex; gap:8px; margin-top:14px; flex-wrap:wrap;">${imgs.slice(1).map((im) => `<img src="${esc(im.file_path)}" alt="" style="width:54px; height:54px; object-fit:cover; border-radius:6px;">`).join('')}</div>` : '';
+      return `
+        <div class="project-card">
+          ${cover}
+          ${p.region ? `<span class="project-tag">${esc(p.region)}</span>` : ''}
+          <h3>${esc(p.title)}</h3>
+          ${p.description ? `<p>${esc(p.description)}</p>` : ''}
+          <div class="project-meta">
+            ${p.location ? `<span>📍 ${esc(p.location)}</span>` : ''}
+            ${p.partner  ? `<span>🤝 ${esc(p.partner)}</span>`  : ''}
+            ${p.year     ? `<span>📅 ${esc(p.year)}</span>`     : ''}
+          </div>
+          ${thumbs}
+        </div>`;
+    }).join('');
+  }
+  function renderPublications(items) {
+    const section = document.getElementById('publications-section');
+    const list = document.getElementById('publications-list');
+    if (!section || !list) return;
+    if (!items.length) { section.hidden = true; return; }
+    section.hidden = false;
+    list.innerHTML = items.map((p) => {
+      const fileLink = p.file_path ? `href="${esc(p.file_path)}" target="_blank" rel="noopener"` : 'href="#" onclick="event.preventDefault()"';
+      return `
+        <a class="pub-item" ${fileLink} style="display:flex; text-decoration:none; color:inherit;">
+          <div class="pub-year">${esc(p.year || '')}</div>
+          <div class="pub-body">
+            ${p.pub_type ? `<div class="pub-type">${esc(p.pub_type)}</div>` : ''}
+            <h4>${esc(p.title)}</h4>
+            ${p.description ? `<p>${esc(p.description)}</p>` : ''}
+          </div>
+          <div class="pub-arrow">${p.file_path ? '↗' : ''}</div>
+        </a>`;
+    }).join('');
+  }
+  async function loadDynamicContent() {
+    const get = (url) => fetch(url).then((r) => (r.ok ? r.json() : null)).catch(() => null);
+    const [content, team, partners, projects, publications] = await Promise.all([
+      get('/api/content'), get('/api/team'), get('/api/partners'),
+      get('/api/projects'), get('/api/publications'),
+    ]);
+    if (content)      applyContent(content);
+    if (team)         renderTeam(team);
+    if (partners)     renderPartners(partners);
+    if (projects)     renderProjects(projects);
+    if (publications) renderPublications(publications);
+  }
+  loadDynamicContent();
+</script>
+
+</body>
+</html>

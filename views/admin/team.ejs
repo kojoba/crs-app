@@ -1,0 +1,59 @@
+<%- include('_layout_head', { pageTitle: 'Team & Directors' }) %>
+
+<div class="admin-wrap">
+  <%- include('_sidebar') %>
+  <main class="admin-main">
+    <div class="topbar">
+      <div>
+        <h1>Team &amp; Directors</h1>
+        <div style="color:var(--grey); font-size:14px;">Board of Directors and Management &amp; Advisory Staff</div>
+      </div>
+    </div>
+
+    <% if (flash) { %><div class="flash flash-<%= flash.type %>"><%= flash.message %></div><% } %>
+
+    <% function renderGroup(title, group, people) { %>
+      <div class="panel" style="padding:0;">
+        <div style="display:flex; justify-content:space-between; align-items:center; padding:18px 24px; border-bottom:1px solid var(--line);">
+          <h2 style="margin:0;"><%= title %></h2>
+          <a href="/admin/team/new?group=<%= group %>" class="btn btn-secondary btn-sm">+ Add</a>
+        </div>
+        <% if (people.length === 0) { %>
+          <div class="empty-state"><p>No one added yet.</p></div>
+        <% } else { %>
+          <table>
+            <thead><tr><th>Photo</th><th>Name</th><th>Role</th><th>Order</th><th style="text-align:right;">Actions</th></tr></thead>
+            <tbody>
+              <% people.forEach((m) => { %>
+                <tr>
+                  <td>
+                    <% if (m.photo_path) { %>
+                      <img src="<%= m.photo_path %>" alt="" style="width:40px; height:40px; border-radius:50%; object-fit:cover;" />
+                    <% } else { %>
+                      <span style="display:inline-flex; width:40px; height:40px; border-radius:50%; background:var(--cream); align-items:center; justify-content:center; font-size:12px; color:var(--grey);"><%= m.initials || '—' %></span>
+                    <% } %>
+                  </td>
+                  <td><strong><%= m.name %></strong></td>
+                  <td class="muted"><%= m.role || '—' %></td>
+                  <td class="muted"><%= m.display_order %></td>
+                  <td style="text-align:right;">
+                    <div class="row-actions" style="justify-content:flex-end;">
+                      <a class="btn btn-secondary btn-sm" href="/admin/team/<%= m.id %>/edit">Edit</a>
+                      <form method="POST" action="/admin/team/<%= m.id %>/delete" onsubmit="return confirm('Remove this person?');" style="display:inline;">
+                        <button class="btn btn-danger btn-sm" type="submit">Delete</button>
+                      </form>
+                    </div>
+                  </td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        <% } %>
+      </div>
+    <% } %>
+
+    <%- renderGroup('Board of Directors', 'trustee', trustees) %>
+    <%- renderGroup('Management & Advisory Staff', 'management', management) %>
+  </main>
+</div>
+</body></html>

@@ -1,0 +1,45 @@
+<%- include('_layout_head', { pageTitle: 'Page Text' }) %>
+
+<div class="admin-wrap">
+  <%- include('_sidebar') %>
+  <main class="admin-main">
+    <div class="topbar">
+      <div>
+        <h1>Page Text</h1>
+        <div style="color:var(--grey); font-size:14px;">Edit the headlines and paragraphs across the site.</div>
+      </div>
+    </div>
+
+    <% if (flash) { %><div class="flash flash-<%= flash.type %>"><%= flash.message %></div><% } %>
+
+    <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:24px;">
+      <% pages.forEach((pg) => { %>
+        <a href="/admin/content?page=<%= pg.id %>"
+           class="btn <%= pg.id === page ? 'btn-primary' : 'btn-secondary' %> btn-sm"><%= pg.label %></a>
+      <% }) %>
+    </div>
+
+    <form method="POST" action="/admin/content" class="panel">
+      <input type="hidden" name="__page" value="<%= page %>" />
+      <% if (blocks.length === 0) { %>
+        <div class="empty-state"><p>No editable text on this page.</p></div>
+      <% } else { %>
+        <% blocks.forEach((b) => { %>
+          <div class="form-row">
+            <label for="<%= b.key %>"><%= b.label %></label>
+            <% if (b.input_type === 'textarea') { %>
+              <textarea id="<%= b.key %>" name="<%= b.key %>"><%= b.value || '' %></textarea>
+            <% } else { %>
+              <input id="<%= b.key %>" name="<%= b.key %>" type="text" value="<%= b.value || '' %>" />
+            <% } %>
+          </div>
+        <% }) %>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">Save changes</button>
+          <a href="/" target="_blank" class="btn btn-secondary">View site ↗</a>
+        </div>
+      <% } %>
+    </form>
+  </main>
+</div>
+</body></html>

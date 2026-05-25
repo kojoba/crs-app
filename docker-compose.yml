@@ -1,0 +1,17 @@
+# One-command production-style local run:
+#   docker compose up -d --build
+# Then visit http://localhost:3000 and http://localhost:3000/admin/login
+
+services:
+  crs:
+    build: .
+    container_name: crs
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    volumes:
+      # Persist the SQLite DB and uploaded files outside the container.
+      - ./db:/app/db
+      - ./public/uploads:/app/public/uploads

@@ -1,0 +1,77 @@
+<%- include('_layout_head', { pageTitle: (mode === 'new' ? 'New publication' : 'Edit publication') }) %>
+
+<div class="admin-wrap">
+  <%- include('_sidebar') %>
+  <main class="admin-main">
+    <div class="topbar">
+      <div>
+        <div class="breadcrumb"><a href="/admin/publications">← Publications</a></div>
+        <h1><%= mode === 'new' ? 'New publication' : 'Edit publication' %></h1>
+      </div>
+    </div>
+
+    <% if (flash) { %>
+      <div class="flash flash-<%= flash.type %>"><%= flash.message %></div>
+    <% } %>
+
+    <form method="POST"
+          action="<%= mode === 'new' ? '/admin/publications' : '/admin/publications/' + publication.id %>"
+          enctype="multipart/form-data"
+          class="panel">
+
+      <div class="form-row">
+        <label for="title">Title *</label>
+        <input id="title" name="title" type="text" required value="<%= publication.title || '' %>" />
+      </div>
+
+      <div class="form-cols">
+        <div class="form-row">
+          <label for="pub_type">Type</label>
+          <select id="pub_type" name="pub_type">
+            <% const types = ['', 'Research Report', 'Policy Brief', 'Working Paper', 'Tool', 'Case Study', 'Briefing Note']; %>
+            <% types.forEach((t) => { %>
+              <option value="<%= t %>" <%= (publication.pub_type || '') === t ? 'selected' : '' %>><%= t || '—' %></option>
+            <% }) %>
+          </select>
+        </div>
+        <div class="form-row">
+          <label for="year">Year</label>
+          <input id="year" name="year" type="number" min="2000" max="2100" value="<%= publication.year || '' %>" />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <label for="description">Description</label>
+        <textarea id="description" name="description" placeholder="One- to two-sentence summary that will appear under the title."><%= publication.description || '' %></textarea>
+      </div>
+
+      <div class="form-row">
+        <label for="file">File (PDF, DOCX, PPTX — max 25 MB)</label>
+        <input id="file" name="file" type="file" accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.png,.jpg,.jpeg,.webp" />
+        <% if (publication.file_path) { %>
+          <div class="hint" style="margin-top:8px;">
+            Current file:
+            <a href="<%= publication.file_path %>" target="_blank" rel="noopener"><%= publication.original_filename || publication.file_path %></a>
+          </div>
+          <div class="checkbox-row" style="margin-top:8px;">
+            <input id="remove_file" name="remove_file" type="checkbox" />
+            <label for="remove_file" style="margin:0; font-weight:400;">Remove current file</label>
+          </div>
+        <% } %>
+        <div class="hint">Uploading a new file replaces the existing one.</div>
+      </div>
+
+      <div class="form-row" style="max-width:200px;">
+        <label for="display_order">Display order</label>
+        <input id="display_order" name="display_order" type="number" value="<%= publication.display_order != null ? publication.display_order : 0 %>" />
+        <div class="hint">Lower numbers appear first.</div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary"><%= mode === 'new' ? 'Create publication' : 'Save changes' %></button>
+        <a href="/admin/publications" class="btn btn-secondary">Cancel</a>
+      </div>
+    </form>
+  </main>
+</div>
+</body></html>

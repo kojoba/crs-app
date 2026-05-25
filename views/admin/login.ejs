@@ -1,0 +1,27 @@
+<%- include('_layout_head', { pageTitle: 'Sign in' }) %>
+
+<div class="login-wrap">
+  <div class="login-card">
+    <div class="brand-mark">CRS</div>
+    <h1>Sign in</h1>
+    <p class="sub">Community Resource Systems · Admin</p>
+
+    <% if (error) { %>
+      <div class="flash flash-error"><%= error %></div>
+    <% } %>
+
+    <form method="POST" action="/admin/login">
+      <div class="form-row">
+        <label for="username">Username</label>
+        <input id="username" name="username" type="text" autocomplete="username" required autofocus />
+      </div>
+      <div class="form-row">
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" autocomplete="current-password" required />
+      </div>
+      <button type="submit" class="btn btn-primary" style="width:100%;">Sign in</button>
+    </form>
+  </div>
+</div>
+
+</body></html>

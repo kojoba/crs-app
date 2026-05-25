@@ -1,0 +1,50 @@
+<%- include('_layout_head', { pageTitle: 'Partners' }) %>
+
+<div class="admin-wrap">
+  <%- include('_sidebar') %>
+  <main class="admin-main">
+    <div class="topbar">
+      <div>
+        <h1>Partners</h1>
+        <div style="color:var(--grey); font-size:14px;">Government · Development Cooperation · Communities</div>
+      </div>
+    </div>
+
+    <% if (flash) { %><div class="flash flash-<%= flash.type %>"><%= flash.message %></div><% } %>
+
+    <% const catLabels = { government: 'Government', development: 'Development Cooperation', community: 'Communities' }; %>
+    <% Object.keys(catLabels).forEach((cat) => { %>
+      <div class="panel" style="padding:0;">
+        <div style="display:flex; justify-content:space-between; align-items:center; padding:18px 24px; border-bottom:1px solid var(--line);">
+          <h2 style="margin:0;"><%= catLabels[cat] %></h2>
+          <a href="/admin/partners/new?cat=<%= cat %>" class="btn btn-secondary btn-sm">+ Add</a>
+        </div>
+        <% if (byCat[cat].length === 0) { %>
+          <div class="empty-state"><p>No partners added yet.</p></div>
+        <% } else { %>
+          <table>
+            <thead><tr><th>Name</th><th>Note</th><th>Order</th><th style="text-align:right;">Actions</th></tr></thead>
+            <tbody>
+              <% byCat[cat].forEach((p) => { %>
+                <tr>
+                  <td><strong><%= p.name %></strong></td>
+                  <td class="muted"><%= p.description || '—' %></td>
+                  <td class="muted"><%= p.display_order %></td>
+                  <td style="text-align:right;">
+                    <div class="row-actions" style="justify-content:flex-end;">
+                      <a class="btn btn-secondary btn-sm" href="/admin/partners/<%= p.id %>/edit">Edit</a>
+                      <form method="POST" action="/admin/partners/<%= p.id %>/delete" onsubmit="return confirm('Remove this partner?');" style="display:inline;">
+                        <button class="btn btn-danger btn-sm" type="submit">Delete</button>
+                      </form>
+                    </div>
+                  </td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        <% } %>
+      </div>
+    <% }) %>
+  </main>
+</div>
+</body></html>

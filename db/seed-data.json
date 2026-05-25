@@ -1,0 +1,380 @@
+{
+  "team_members": [
+    {
+      "group_type": "trustee",
+      "name": "Placeholder — Chairman",
+      "role": "Chairman of the Board",
+      "initials": "AK",
+      "display_order": 1,
+      "bio": "A senior leader with combined public and private sector experience, with established links to academia and the development sector. Brings strategic oversight, convening power, and a track record of bridging policy, enterprise, and community-level practice in Ghana."
+    },
+    {
+      "group_type": "trustee",
+      "name": "Placeholder — Secretary",
+      "role": "Secretary to the Board",
+      "initials": "SL",
+      "display_order": 2,
+      "bio": "A practising lawyer with formal legal qualifications and experience in either the public or private sector. Provides governance, regulatory, and compliance oversight, and ensures CRS upholds the highest standards of legal and ethical accountability."
+    },
+    {
+      "group_type": "trustee",
+      "name": "Placeholder — Treasurer",
+      "role": "Treasurer to the Board",
+      "initials": "TF",
+      "display_order": 3,
+      "bio": "A professional with an accounting, finance, and public administration background, drawing on experience in either the public or private sector. Safeguards CRS's fiduciary integrity and oversees financial controls, reporting, budgeting, and risk management for donor-funded programmes."
+    },
+    {
+      "group_type": "management",
+      "name": "Placeholder — Executive Director",
+      "role": "Executive Director",
+      "initials": "ED",
+      "display_order": 1,
+      "bio": "Leads CRS's strategic direction and partner relationships. Background in community mobilisation and development programme management across multiple Ghanaian regions."
+    },
+    {
+      "group_type": "management",
+      "name": "Placeholder — Programmes",
+      "role": "Head of Programmes",
+      "initials": "PM",
+      "display_order": 2,
+      "bio": "Oversees all NAS Framework engagements and field operations. Specialist in participatory needs assessment and community governance design."
+    },
+    {
+      "group_type": "management",
+      "name": "Placeholder — Research & MEL",
+      "role": "Research & MEL Lead",
+      "initials": "RM",
+      "display_order": 3,
+      "bio": "Leads CRS's monitoring, evaluation, and learning function. Experienced in mixed-methods community research and participatory MEL framework design."
+    },
+    {
+      "group_type": "management",
+      "name": "Placeholder — Partnerships",
+      "role": "Partnerships Advisor",
+      "initials": "PA",
+      "display_order": 4,
+      "bio": "Manages relationships with international development partners, donors, and implementing organisations. Fluent in donor reporting and sub-grant management."
+    },
+    {
+      "group_type": "management",
+      "name": "Placeholder — Gender Specialist",
+      "role": "Gender & Inclusion Specialist",
+      "initials": "GE",
+      "display_order": 5,
+      "bio": "Ensures all CRS engagements are gender-sensitive and socially inclusive. Leads gender-disaggregated data collection and women's leadership components."
+    },
+    {
+      "group_type": "management",
+      "name": "Placeholder — Field Operations",
+      "role": "Field Operations Coordinator",
+      "initials": "FA",
+      "display_order": 6,
+      "bio": "Manages community entry, field logistics, and local enumerator teams across CRS's active engagements in Ghana's regions."
+    },
+    {
+      "group_type": "management",
+      "name": "Placeholder — Comms & Knowledge",
+      "role": "Communications & Knowledge Manager",
+      "initials": "CB",
+      "display_order": 7,
+      "bio": "Manages CRS's publications, external communications, and knowledge management — translating field learning into accessible practitioner resources."
+    },
+    {
+      "group_type": "management",
+      "name": "Placeholder — Finance",
+      "role": "Finance & Operations Manager",
+      "initials": "FO",
+      "display_order": 8,
+      "bio": "Responsible for CRS's financial management, donor compliance, and operational systems — ensuring rigorous accountability to both partners and communities."
+    }
+  ],
+  "partners": [
+    {
+      "category": "government",
+      "display_order": 1,
+      "name": "Ghana Ministry of Local Government & Rural Development"
+    },
+    {
+      "category": "government",
+      "display_order": 2,
+      "name": "District Assemblies & Municipal Councils"
+    },
+    {
+      "category": "government",
+      "display_order": 3,
+      "name": "Ghana Health Service"
+    },
+    {
+      "category": "government",
+      "display_order": 4,
+      "name": "Ministry of Gender, Children & Social Protection"
+    },
+    {
+      "category": "development",
+      "display_order": 1,
+      "name": "UN Agencies (UNICEF, UNDP, UN Women)"
+    },
+    {
+      "category": "development",
+      "display_order": 2,
+      "name": "FCDO / UK Aid bilateral programmes"
+    },
+    {
+      "category": "development",
+      "display_order": 3,
+      "name": "USAID Local Works implementing partners"
+    },
+    {
+      "category": "development",
+      "display_order": 4,
+      "name": "GIZ, EU Delegation Ghana, World Bank"
+    },
+    {
+      "category": "community",
+      "display_order": 1,
+      "name": "Community-Based Organisations (CBOs)"
+    },
+    {
+      "category": "community",
+      "display_order": 2,
+      "name": "Traditional councils & local leaders"
+    },
+    {
+      "category": "community",
+      "display_order": 3,
+      "name": "Women's groups & youth networks"
+    },
+    {
+      "category": "community",
+      "display_order": 4,
+      "name": "Faith-based organisations & cooperatives"
+    }
+  ],
+  "content_blocks": [
+    [
+      "home",
+      "home.hero.label",
+      "Hero — eyebrow label",
+      "text",
+      "Localisation Consultancy · Ghana"
+    ],
+    [
+      "home",
+      "home.hero.title",
+      "Hero — title (first part)",
+      "text",
+      "Development that"
+    ],
+    [
+      "home",
+      "home.hero.highlight",
+      "Hero — highlighted phrase",
+      "text",
+      "starts with communities"
+    ],
+    [
+      "home",
+      "home.hero.lead",
+      "Hero — lead paragraph",
+      "textarea",
+      "CRS bridges international development partners with underserved communities in Ghana — mapping real needs, recognising hidden assets, and building systems that last."
+    ],
+    [
+      "home",
+      "home.who.label",
+      "Who We Are — label",
+      "text",
+      "Who We Are"
+    ],
+    [
+      "home",
+      "home.who.title",
+      "Who We Are — heading",
+      "text",
+      "A trusted intermediary between partners and communities"
+    ],
+    [
+      "home",
+      "home.who.p1",
+      "Who We Are — paragraph 1",
+      "textarea",
+      "Community Resource Systems is a localization advisory organization based in Ghana. We act as the essential link between international development partners and the communities they aim to serve — deeply rooted in local realities and fluent in the language of development."
+    ],
+    [
+      "home",
+      "home.who.p2",
+      "Who We Are — paragraph 2",
+      "textarea",
+      "Our conviction is simple: sustainable development does not come from the outside in. It starts by understanding what communities truly need, recognizing what they already have, and building systems that allow them to thrive beyond external aid."
+    ],
+    [
+      "home",
+      "home.who.quote",
+      "Who We Are — pull quote",
+      "textarea",
+      "Sustainable development does not come from the outside in. It comes from understanding what communities need, recognizing what they already have, and building systems that allow them to thrive."
+    ],
+    [
+      "home",
+      "home.nas.intro",
+      "NAS framework — intro",
+      "textarea",
+      "Every engagement is structured around three interconnected pillars that together form a complete picture of community context and potential."
+    ],
+    [
+      "home",
+      "home.nas.needs.title",
+      "NAS — Needs title",
+      "text",
+      "Needs"
+    ],
+    [
+      "home",
+      "home.nas.needs.desc",
+      "NAS — Needs description",
+      "textarea",
+      "We conduct rigorous, participatory assessments to understand what communities actually require — not what partners assume they need."
+    ],
+    [
+      "home",
+      "home.nas.assets.title",
+      "NAS — Assets title",
+      "text",
+      "Assets"
+    ],
+    [
+      "home",
+      "home.nas.assets.desc",
+      "NAS — Assets description",
+      "textarea",
+      "We map resources communities already hold: knowledge, networks, land, skills, and social capital that external partners often overlook."
+    ],
+    [
+      "home",
+      "home.nas.systems.title",
+      "NAS — Systems title",
+      "text",
+      "Systems"
+    ],
+    [
+      "home",
+      "home.nas.systems.desc",
+      "NAS — Systems description",
+      "textarea",
+      "We help design and strengthen local systems — governance, supply chains, accountability structures — that sustain outcomes beyond any single project."
+    ],
+    [
+      "home",
+      "home.partners.title",
+      "Partners teaser — heading",
+      "text",
+      "Partners across sectors"
+    ],
+    [
+      "home",
+      "home.partners.intro",
+      "Partners teaser — intro",
+      "textarea",
+      "CRS engages with a diverse ecosystem of partners — from government ministries to multilateral donors to community-based organisations."
+    ],
+    [
+      "about",
+      "about.hero.title",
+      "About — page title",
+      "text",
+      "About CRS"
+    ],
+    [
+      "about",
+      "about.trustees.intro",
+      "About — Board of Directors intro",
+      "textarea",
+      "CRS is governed by a voluntary Board of Directors who provide strategic oversight, fiduciary stewardship, and independent guidance on a pro bono basis — bringing together expertise across the public, private, legal, academic, and development sectors."
+    ],
+    [
+      "about",
+      "about.management.intro",
+      "About — management intro",
+      "textarea",
+      "Our core team combines deep community embeddedness with the technical rigour demanded by international development standards — the combination that makes CRS uniquely effective."
+    ],
+    [
+      "about",
+      "about.story.p1",
+      "About — story paragraph 1",
+      "textarea",
+      "CRS was founded in response to a recurring pattern observed across development programmes in Ghana: well-resourced international partners arriving with pre-designed solutions for communities whose actual needs, assets, and governance structures they had never meaningfully engaged with."
+    ],
+    [
+      "about",
+      "about.story.p2",
+      "About — story paragraph 2",
+      "textarea",
+      "The result was predictable — costly misalignments, low community ownership, and projects that produced outputs without building any lasting capacity or infrastructure."
+    ],
+    [
+      "about",
+      "about.story.p3",
+      "About — story paragraph 3",
+      "textarea",
+      "CRS was built to solve this at the source — acting as a trusted intermediary that ensures no development partner has to work in Ghana without genuine community insight, and no community has to receive development without a meaningful voice in its design."
+    ],
+    [
+      "about",
+      "about.story.quote",
+      "About — story pull quote",
+      "textarea",
+      "We are not a bridge that carries partners into communities. We are a bridge that carries communities into the decisions that affect them."
+    ],
+    [
+      "projects",
+      "projects.hero.title",
+      "Projects — page title",
+      "text",
+      "Projects & Engagements"
+    ],
+    [
+      "projects",
+      "projects.hero.intro",
+      "Projects — page intro",
+      "textarea",
+      "Selected examples of CRS's localisation advisory work across Ghana — from the Northern Savannah to the Greater Accra region."
+    ],
+    [
+      "publications",
+      "publications.hero.title",
+      "Publications — page title",
+      "text",
+      "Publications"
+    ],
+    [
+      "publications",
+      "publications.hero.intro",
+      "Publications — page intro",
+      "textarea",
+      "CRS produces practitioner-focused research, tools, and briefings to advance the localisation agenda across the development sector."
+    ],
+    [
+      "contact",
+      "contact.email",
+      "Contact — email address",
+      "text",
+      "info@crs-ghana.org"
+    ],
+    [
+      "contact",
+      "contact.location",
+      "Contact — location",
+      "text",
+      "Accra, Ghana"
+    ],
+    [
+      "footer",
+      "footer.tagline",
+      "Footer — tagline",
+      "textarea",
+      "Localisation consultancy providing rigorous community engagement for development partners in Ghana."
+    ]
+  ]
+}

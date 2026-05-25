@@ -1,0 +1,18 @@
+<aside class="admin-sidebar">
+  <div class="brand">
+    <div class="brand-mark">CRS</div>
+    <div class="brand-text">Admin</div>
+  </div>
+  <nav>
+    <a href="/admin" class="<%= currentPath === '/' ? 'active' : '' %>">Dashboard</a>
+    <div class="sidebar-section">Content</div>
+    <a href="/admin/projects" class="<%= currentPath.startsWith('/projects') ? 'active' : '' %>">Projects</a>
+    <a href="/admin/publications" class="<%= currentPath.startsWith('/publications') ? 'active' : '' %>">Publications</a>
+    <a href="/admin/team" class="<%= currentPath.startsWith('/team') ? 'active' : '' %>">Team &amp; Directors</a>
+    <a href="/admin/partners" class="<%= currentPath.startsWith('/partners') ? 'active' : '' %>">Partners</a>
+    <a href="/admin/content" class="<%= currentPath.startsWith('/content') ? 'active' : '' %>">Page Text</a>
+    <div class="sidebar-section">Settings</div>
+    <a href="/admin/account" class="<%= currentPath.startsWith('/account') ? 'active' : '' %>">Account</a>
+    <a href="/" target="_blank">View site ↗</a>
+  </nav>
+</aside>

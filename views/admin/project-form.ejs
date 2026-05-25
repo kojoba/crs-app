@@ -1,0 +1,90 @@
+<%- include('_layout_head', { pageTitle: (mode === 'new' ? 'New project' : 'Edit project') }) %>
+
+<div class="admin-wrap">
+  <%- include('_sidebar') %>
+  <main class="admin-main">
+    <div class="topbar">
+      <div>
+        <div class="breadcrumb"><a href="/admin/projects">← Projects</a></div>
+        <h1><%= mode === 'new' ? 'New project' : 'Edit project' %></h1>
+      </div>
+    </div>
+
+    <% if (flash) { %><div class="flash flash-<%= flash.type %>"><%= flash.message %></div><% } %>
+
+    <form method="POST" action="<%= mode === 'new' ? '/admin/projects' : '/admin/projects/' + project.id %>" enctype="multipart/form-data" class="panel">
+      <div class="form-row">
+        <label for="title">Title *</label>
+        <input id="title" name="title" type="text" required value="<%= project.title || '' %>" />
+      </div>
+
+      <div class="form-cols">
+        <div class="form-row">
+          <label for="region">Region</label>
+          <input id="region" name="region" type="text" value="<%= project.region || '' %>" placeholder="e.g. Northern Region" />
+        </div>
+        <div class="form-row">
+          <label for="location">Location</label>
+          <input id="location" name="location" type="text" value="<%= project.location || '' %>" placeholder="e.g. Tamale" />
+        </div>
+      </div>
+
+      <div class="form-cols">
+        <div class="form-row">
+          <label for="partner">Partner / Funder</label>
+          <input id="partner" name="partner" type="text" value="<%= project.partner || '' %>" placeholder="e.g. UNICEF, FCDO" />
+        </div>
+        <div class="form-row">
+          <label for="year">Year</label>
+          <input id="year" name="year" type="number" min="2000" max="2100" value="<%= project.year || '' %>" />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <label for="description">Description</label>
+        <textarea id="description" name="description" placeholder="What was the engagement, what did CRS deliver, and what was the outcome?"><%= project.description || '' %></textarea>
+      </div>
+
+      <div class="form-row">
+        <label for="images">Add images (PNG / JPG / WEBP — up to 12, max 10 MB each)</label>
+        <input id="images" name="images" type="file" accept="image/*" multiple />
+        <div class="hint">You can select several at once. They are added to the gallery below.</div>
+      </div>
+
+      <div class="form-row" style="max-width:200px;">
+        <label for="display_order">Display order</label>
+        <input id="display_order" name="display_order" type="number" value="<%= project.display_order != null ? project.display_order : 0 %>" />
+        <div class="hint">Lower numbers appear first.</div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary"><%= mode === 'new' ? 'Create project' : 'Save changes' %></button>
+        <a href="/admin/projects" class="btn btn-secondary">Cancel</a>
+      </div>
+    </form>
+
+    <% if (mode === 'edit') { %>
+      <div class="panel">
+        <h2>Image gallery</h2>
+        <% if (!images || images.length === 0) { %>
+          <p class="muted" style="color:var(--mid-grey);">No images yet. Use the form above to add some.</p>
+        <% } else { %>
+          <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(160px,1fr)); gap:16px;">
+            <% images.forEach((img) => { %>
+              <div style="border:1px solid var(--line); border-radius:8px; overflow:hidden; background:var(--paper);">
+                <img src="<%= img.file_path %>" alt="" style="width:100%; height:120px; object-fit:cover; display:block;" />
+                <div style="padding:8px; display:flex; justify-content:space-between; align-items:center;">
+                  <span class="muted" style="font-size:12px;">#<%= img.display_order %></span>
+                  <form method="POST" action="/admin/projects/<%= project.id %>/images/<%= img.id %>/delete" onsubmit="return confirm('Remove this image?');">
+                    <button class="btn-link" type="submit" style="color:var(--error);">Remove</button>
+                  </form>
+                </div>
+              </div>
+            <% }) %>
+          </div>
+        <% } %>
+      </div>
+    <% } %>
+  </main>
+</div>
+</body></html>

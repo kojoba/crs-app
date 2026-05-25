@@ -1,0 +1,70 @@
+<%- include('_layout_head', { pageTitle: 'Dashboard' }) %>
+
+<div class="admin-wrap">
+  <%- include('_sidebar') %>
+  <main class="admin-main">
+    <%- include('_topbar', { pageTitle: 'Dashboard', pageSubtitle: 'Manage every part of the CRS website.' }) %>
+
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-label">Projects</div>
+        <div class="stat-value"><%= projectCount %></div>
+        <a href="/admin/projects">Manage →</a>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Publications</div>
+        <div class="stat-value"><%= publicationCount %></div>
+        <a href="/admin/publications">Manage →</a>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Team &amp; Directors</div>
+        <div class="stat-value"><%= teamCount %></div>
+        <a href="/admin/team">Manage →</a>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Partners</div>
+        <div class="stat-value"><%= partnerCount %></div>
+        <a href="/admin/partners">Manage →</a>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+        <h2 style="margin:0;">Recent projects</h2>
+        <a href="/admin/projects/new" class="btn btn-secondary btn-sm">+ New project</a>
+      </div>
+      <% if (latestProjects.length === 0) { %>
+        <div class="empty-state"><h3>No projects yet</h3><p>Add your first project to populate the Projects page.</p></div>
+      <% } else { %>
+        <table>
+          <thead><tr><th>Title</th><th>Region</th><th>Year</th><th></th></tr></thead>
+          <tbody>
+            <% latestProjects.forEach((p) => { %>
+              <tr><td><%= p.title %></td><td class="muted"><%= p.region || '—' %></td><td class="muted"><%= p.year || '—' %></td><td><a href="/admin/projects/<%= p.id %>/edit">Edit</a></td></tr>
+            <% }) %>
+          </tbody>
+        </table>
+      <% } %>
+    </div>
+
+    <div class="panel">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+        <h2 style="margin:0;">Recent publications</h2>
+        <a href="/admin/publications/new" class="btn btn-secondary btn-sm">+ New publication</a>
+      </div>
+      <% if (latestPublications.length === 0) { %>
+        <div class="empty-state"><h3>No publications yet</h3><p>Upload research reports, policy briefs, and tools.</p></div>
+      <% } else { %>
+        <table>
+          <thead><tr><th>Title</th><th>Type</th><th>Year</th><th></th></tr></thead>
+          <tbody>
+            <% latestPublications.forEach((p) => { %>
+              <tr><td><%= p.title %></td><td class="muted"><%= p.pub_type || '—' %></td><td class="muted"><%= p.year || '—' %></td><td><a href="/admin/publications/<%= p.id %>/edit">Edit</a></td></tr>
+            <% }) %>
+          </tbody>
+        </table>
+      <% } %>
+    </div>
+  </main>
+</div>
+</body></html>

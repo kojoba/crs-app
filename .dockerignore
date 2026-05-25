@@ -1,0 +1,12 @@
+node_modules
+npm-debug.log
+.env
+.git
+.gitignore
+db/crs.db
+db/crs.db-journal
+db/sessions.db
+public/uploads/*
+!public/uploads/.gitkeep
+*.log
+README.md

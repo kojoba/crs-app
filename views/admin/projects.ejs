@@ -1,0 +1,52 @@
+<%- include('_layout_head', { pageTitle: 'Projects' }) %>
+
+<div class="admin-wrap">
+  <%- include('_sidebar') %>
+  <main class="admin-main">
+    <div class="topbar">
+      <div>
+        <h1>Projects</h1>
+        <div style="color:var(--grey); font-size:14px;"><%= projects.length %> project<%= projects.length === 1 ? '' : 's' %></div>
+      </div>
+      <div class="page-actions"><a href="/admin/projects/new" class="btn btn-primary">+ New project</a></div>
+    </div>
+
+    <% if (flash) { %><div class="flash flash-<%= flash.type %>"><%= flash.message %></div><% } %>
+
+    <div class="panel" style="padding:0;">
+      <% if (projects.length === 0) { %>
+        <div class="empty-state">
+          <h3>No projects yet</h3>
+          <p>Click <strong>New project</strong> to add your first one. It appears on the public Projects page.</p>
+        </div>
+      <% } else { %>
+        <table>
+          <thead>
+            <tr><th>Title</th><th>Region</th><th>Partner</th><th>Year</th><th>Images</th><th>Order</th><th style="text-align:right;">Actions</th></tr>
+          </thead>
+          <tbody>
+            <% projects.forEach((p) => { %>
+              <tr>
+                <td><strong><%= p.title %></strong></td>
+                <td class="muted"><%= p.region || '—' %></td>
+                <td class="muted"><%= p.partner || '—' %></td>
+                <td class="muted"><%= p.year || '—' %></td>
+                <td class="muted"><%= p.imageCount %></td>
+                <td class="muted"><%= p.display_order %></td>
+                <td style="text-align:right;">
+                  <div class="row-actions" style="justify-content:flex-end;">
+                    <a class="btn btn-secondary btn-sm" href="/admin/projects/<%= p.id %>/edit">Edit</a>
+                    <form method="POST" action="/admin/projects/<%= p.id %>/delete" onsubmit="return confirm('Delete this project and its images? This cannot be undone.');" style="display:inline;">
+                      <button class="btn btn-danger btn-sm" type="submit">Delete</button>
+                    </form>
+                  </div>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      <% } %>
+    </div>
+  </main>
+</div>
+</body></html>

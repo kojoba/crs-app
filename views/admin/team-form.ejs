@@ -1,0 +1,71 @@
+<%- include('_layout_head', { pageTitle: (mode === 'new' ? 'Add person' : 'Edit person') }) %>
+
+<div class="admin-wrap">
+  <%- include('_sidebar') %>
+  <main class="admin-main">
+    <div class="topbar">
+      <div>
+        <div class="breadcrumb"><a href="/admin/team">← Team &amp; Directors</a></div>
+        <h1><%= mode === 'new' ? 'Add person' : 'Edit person' %></h1>
+      </div>
+    </div>
+
+    <% if (flash) { %><div class="flash flash-<%= flash.type %>"><%= flash.message %></div><% } %>
+
+    <form method="POST" action="<%= mode === 'new' ? '/admin/team' : '/admin/team/' + member.id %>" enctype="multipart/form-data" class="panel" style="max-width:640px;">
+      <div class="form-cols">
+        <div class="form-row">
+          <label for="group_type">Group</label>
+          <select id="group_type" name="group_type">
+            <option value="trustee"    <%= member.group_type === 'trustee' ? 'selected' : '' %>>Board of Directors</option>
+            <option value="management" <%= member.group_type === 'management' ? 'selected' : '' %>>Management &amp; Advisory Staff</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label for="display_order">Display order</label>
+          <input id="display_order" name="display_order" type="number" value="<%= member.display_order != null ? member.display_order : 0 %>" />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <label for="name">Name *</label>
+        <input id="name" name="name" type="text" required value="<%= member.name || '' %>" />
+      </div>
+
+      <div class="form-cols">
+        <div class="form-row">
+          <label for="role">Role / Title</label>
+          <input id="role" name="role" type="text" value="<%= member.role || '' %>" placeholder="e.g. Chairman of the Board" />
+        </div>
+        <div class="form-row">
+          <label for="initials">Initials (avatar fallback)</label>
+          <input id="initials" name="initials" type="text" maxlength="3" value="<%= member.initials || '' %>" placeholder="e.g. AK" />
+          <div class="hint">Shown if no photo is uploaded.</div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <label for="bio">Bio</label>
+        <textarea id="bio" name="bio" placeholder="Short professional biography."><%= member.bio || '' %></textarea>
+      </div>
+
+      <div class="form-row">
+        <label for="photo">Profile photo (PNG / JPG / WEBP, max 10 MB)</label>
+        <input id="photo" name="photo" type="file" accept="image/*" />
+        <% if (member.photo_path) { %>
+          <div style="margin-top:10px; display:flex; align-items:center; gap:12px;">
+            <img src="<%= member.photo_path %>" alt="" style="width:56px; height:56px; border-radius:50%; object-fit:cover;" />
+            <label class="checkbox-row" style="margin:0;"><input type="checkbox" name="remove_photo" /> Remove current photo</label>
+          </div>
+        <% } %>
+        <div class="hint">Uploading a new photo replaces the existing one.</div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary"><%= mode === 'new' ? 'Add person' : 'Save changes' %></button>
+        <a href="/admin/team" class="btn btn-secondary">Cancel</a>
+      </div>
+    </form>
+  </main>
+</div>
+</body></html>

@@ -1,0 +1,68 @@
+<%- include('_layout_head', { pageTitle: 'Publications' }) %>
+
+<div class="admin-wrap">
+  <%- include('_sidebar') %>
+  <main class="admin-main">
+    <div class="topbar">
+      <div>
+        <h1>Publications</h1>
+        <div style="color:var(--grey); font-size:14px;"><%= publications.length %> publication<%= publications.length === 1 ? '' : 's' %></div>
+      </div>
+      <div class="page-actions">
+        <a href="/admin/publications/new" class="btn btn-primary">+ New publication</a>
+      </div>
+    </div>
+
+    <% if (flash) { %>
+      <div class="flash flash-<%= flash.type %>"><%= flash.message %></div>
+    <% } %>
+
+    <div class="panel" style="padding:0;">
+      <% if (publications.length === 0) { %>
+        <div class="empty-state">
+          <h3>No publications yet</h3>
+          <p>Click <strong>New publication</strong> to upload your first report, brief, or tool.</p>
+        </div>
+      <% } else { %>
+        <table>
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Type</th>
+              <th>Year</th>
+              <th>File</th>
+              <th>Order</th>
+              <th style="text-align:right;">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% publications.forEach((p) => { %>
+              <tr>
+                <td><strong><%= p.title %></strong></td>
+                <td class="muted"><%= p.pub_type || '—' %></td>
+                <td class="muted"><%= p.year || '—' %></td>
+                <td>
+                  <% if (p.file_path) { %>
+                    <a href="<%= p.file_path %>" target="_blank" rel="noopener" style="font-size:13px;"><%= p.original_filename || 'Download' %></a>
+                  <% } else { %>
+                    <span class="muted" style="font-size:13px;">No file</span>
+                  <% } %>
+                </td>
+                <td class="muted"><%= p.display_order %></td>
+                <td style="text-align:right;">
+                  <div class="row-actions" style="justify-content:flex-end;">
+                    <a class="btn btn-secondary btn-sm" href="/admin/publications/<%= p.id %>/edit">Edit</a>
+                    <form method="POST" action="/admin/publications/<%= p.id %>/delete" onsubmit="return confirm('Delete this publication and its file? This cannot be undone.');" style="display:inline;">
+                      <button class="btn btn-danger btn-sm" type="submit">Delete</button>
+                    </form>
+                  </div>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      <% } %>
+    </div>
+  </main>
+</div>
+</body></html>
