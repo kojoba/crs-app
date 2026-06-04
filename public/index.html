@@ -108,6 +108,18 @@
       margin: 24px 0;
     }
 
+    .menu-toggle{
+      display: none;
+      background: var(--green-dark);
+      color: white;
+      border: none;
+      font-size: 24px;
+      width: 42px;
+      height: 42px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
     /* ─── BUTTONS ─────────────────────────────────────────── */
     .btn {
       display: inline-flex; align-items: center; gap: 8px;
@@ -860,7 +872,12 @@
 
     @media (max-width: 768px) {
       nav { padding: 0 20px; }
-      .nav-links { display: none; }
+      .menu-toggle{display: block;}
+      .nav-links { display: none; position: absolute; top: 68px; left: 0; right: 0; background: var(--paper); flex-direction: column; align-items: flex-start; gap: 0; padding: 20px; border-bottom: 1px solid var(--border); box-shadow: 0 12px 24px rgba(0,0,0,0.08);}
+      .nav-links.show{display: flex;}
+      .nav-links li{width: 100%;}
+      .nav-links a{display: block; width: 100%; padding: 14px 0;}
+      .nav-cta{display: inline-block !important; width: auto !important; margin-top: 10px;}
       .hero { grid-template-columns: 1fr; }
       .hero-visual { display: none; }
       .hero-content { padding: 40px 20px; }
@@ -887,7 +904,12 @@
     <div class="nav-logo-mark">CRS</div>
     Community Resource Systems
   </div>
-  <ul class="nav-links">
+
+  <button class="menu-toggle" onclick="toggleMenu()" aria-label="Toggle navigation menu">
+    ☰
+  </button>
+
+  <ul class="nav-links" id="nav-links">
     <li><a onclick="showPage('about')" data-page="about">About</a></li>
     <li><a onclick="showPage('services')" data-page="services">Services</a></li>
     <li><a onclick="showPage('approach')" data-page="approach">Approach</a></li>
@@ -1770,6 +1792,9 @@
      JAVASCRIPT
 ════════════════════════════════════════════════════════ -->
 <script>
+  function toggleMenu(){
+    document.getElementById('nav-links').classList.toggle('show');
+  }
   function showPage(name) {
     // Hide all pages
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -1783,6 +1808,11 @@
     document.querySelectorAll('.nav-links a[data-page]').forEach(a => {
       a.classList.toggle('active', a.dataset.page === name);
     });
+    
+    const navLinks = document.getElementById('nav-links');
+    if(navLinks){
+      navLinks.classList.remove('show');
+    }
   }
 
   function handleSubmit(e) {
