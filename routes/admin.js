@@ -104,6 +104,7 @@ router.get('/', requireAuth, (req, res) => {
     publicationCount: db.prepare('SELECT COUNT(*) AS n FROM publications').get().n,
     teamCount:        db.prepare('SELECT COUNT(*) AS n FROM team_members').get().n,
     partnerCount:     db.prepare('SELECT COUNT(*) AS n FROM partners').get().n,
+    messageCount:     db.prepare('SELECT COUNT(*) AS n FROM contact_messages').get().n,
     latestProjects:   db.prepare('SELECT id, title, region, year FROM projects ORDER BY created_at DESC LIMIT 5').all(),
     latestPublications: db.prepare('SELECT id, title, pub_type, year FROM publications ORDER BY created_at DESC LIMIT 5').all(),
   });
@@ -471,6 +472,38 @@ router.post('/account/password', requireAuth, async (req, res) => {
   db.prepare('UPDATE users SET password_hash = ? WHERE id = ?').run(hash, req.session.userId);
   flash(req, 'success', 'Password updated.');
   res.redirect('/admin/account');
+});
+
+router.get('/messages', requireAuth, (req, res) => {
+  const messages = db.prepare(`
+    SELECT *
+    FROM contact_messages
+    ORDER BY created_at DESC
+  `).all();
+
+  res.render('admin/messages', {
+    pageTitle: 'Contact Messages',
+    messages,
+  });
+});
+
+router.post('/messages/:id/read', requireAuth, (req, res) => {
+  db.prepare(`
+    UPDATE contact_messages
+    SET is_read = 1
+    WHERE id = ?
+  `).run(req.params.id);
+
+  res.redirect('/admin/messages');
+});
+
+router.post('/messages/:id/delete', requireAuth, (req, res) => {
+  db.prepare(`
+    DELETE FROM contact_messages
+    WHERE id = ?
+  `).run(req.params.id);
+
+  res.redirect('/admin/messages');
 });
 
 module.exports = router;

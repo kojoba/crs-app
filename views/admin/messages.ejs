@@ -1,0 +1,66 @@
+<%- include('_layout_head', { pageTitle: 'Contact Messages' }) %>
+
+<div class="admin-wrap">
+  <%- include('_sidebar') %>
+
+  <main class="admin-main">
+    <%- include('_topbar', {
+      pageTitle: 'Contact Messages',
+      pageSubtitle: 'View messages submitted from the CRS website contact form.'
+    }) %>
+
+    <div class="panel">
+      <% if (messages.length === 0) { %>
+        <div class="empty-state">
+          <h3>No messages yet</h3>
+          <p>Messages submitted from the website contact form will appear here.</p>
+        </div>
+      <% } else { %>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Organisation</th>
+              <th>Type</th>
+              <th>Message</th>
+              <th>Date</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% messages.forEach((m) => { %>
+              <tr>
+                <td>
+                  <strong><%= m.first_name %> <%= m.last_name %></strong>
+                  <% if (!m.is_read) { %>
+                    <span class="badge">New</span>
+                  <% } %>
+                </td>
+                <td><a href="mailto:<%= m.email %>"><%= m.email %></a></td>
+                <td class="muted"><%= m.organisation || '—' %></td>
+                <td class="muted"><%= m.enquiry_type || '—' %></td>
+                <td><%= m.message %></td>
+                <td class="muted"><%= m.created_at %></td>
+                <td>
+                  <% if (!m.is_read) { %>
+                    <form method="POST" action="/admin/messages/<%= m.id %>/read" style="display:inline;">
+                      <button class="btn btn-secondary btn-sm">Mark read</button>
+                    </form>
+                  <% } %>
+
+                  <form method="POST" action="/admin/messages/<%= m.id %>/delete" style="display:inline;">
+                    <button class="btn btn-danger btn-sm" onclick="return confirm('Delete this message?')">Delete</button>
+                  </form>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      <% } %>
+    </div>
+  </main>
+</div>
+
+</body>
+</html>

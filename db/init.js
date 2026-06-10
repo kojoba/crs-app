@@ -91,7 +91,22 @@ function createSchema() {
     CREATE INDEX IF NOT EXISTS idx_team_order          ON team_members(group_type, display_order);
     CREATE INDEX IF NOT EXISTS idx_partners_order      ON partners(category, display_order);
     CREATE INDEX IF NOT EXISTS idx_content_page        ON content_blocks(page, display_order);
-  `);
+    
+    CREATE TABLE IF NOT EXISTS contact_messages (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      first_name TEXT NOT NULL,
+      last_name TEXT NOT NULL,
+      email TEXT NOT NULL,
+      organisation TEXT,
+      enquiry_type TEXT,
+      message TEXT NOT NULL,
+      is_read INTEGER DEFAULT 0,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+
+    CREATE INDEX IF NOT EXISTS idx_contact_messages_created
+    ON contact_messages(created_at DESC);
+  `); 
 }
 
 function seedContentAndCollections() {

@@ -4,6 +4,38 @@ const db = require('../db');
 
 const router = express.Router();
 
+router.post('/contact', (req, res) => {
+  const {
+    firstName,
+    lastName,
+    email,
+    organisation,
+    enquiryType,
+    message,
+  } = req.body;
+
+  if (!firstName || !lastName || !email || !message) {
+    return res.status(400).json({
+      error: 'First name, last name, email, and message are required.',
+    });
+  }
+
+  db.prepare(`
+    INSERT INTO contact_messages
+    (first_name, last_name, email, organisation, enquiry_type, message)
+    VALUES (?, ?, ?, ?, ?, ?)
+  `).run(
+    firstName.trim(),
+    lastName.trim(),
+    email.trim(),
+    organisation?.trim() || null,
+    enquiryType?.trim() || null,
+    message.trim()
+  );
+
+  res.status(201).json({ message: 'Message received successfully.' });
+});
+
 // GET /api/projects  — each project includes its image gallery.
 router.get('/projects', (req, res) => {
   const projects = db.prepare(`

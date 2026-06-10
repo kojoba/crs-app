@@ -1564,7 +1564,7 @@
           <div class="label" style="color:var(--ochre);">Send Us a Message</div>
           <h3 style="margin-bottom:28px; font-size:22px;">How can we help?</h3>
 
-          <form onsubmit="handleSubmit(event)">
+          <form id="contactForm">
             <div class="form-row">
               <div class="form-group">
                 <label for="fname">First Name</label>
@@ -1792,6 +1792,7 @@
      JAVASCRIPT
 ════════════════════════════════════════════════════════ -->
 <script>
+
   function toggleMenu(){
     document.getElementById('nav-links').classList.toggle('show');
   }
@@ -1814,18 +1815,54 @@
       navLinks.classList.remove('show');
     }
   }
+  
+  const contactForm = document.getElementById('contactForm');
 
-  function handleSubmit(e) {
-    e.preventDefault();
-    const btn = e.target.querySelector('.form-submit');
-    btn.textContent = 'Message sent ✓';
-    btn.style.background = 'var(--green-mid)';
-    setTimeout(() => {
-      btn.textContent = 'Send Message →';
-      btn.style.background = '';
-      e.target.reset();
-    }, 3000);
+  if (contactForm) {
+    contactForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const btn = contactForm.querySelector('.form-submit');
+      btn.disabled = true;
+      btn.textContent = 'Sending...';
+
+      try {
+        const res = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            firstName: document.getElementById('fname').value,
+            lastName: document.getElementById('lname').value,
+            email: document.getElementById('email').value,
+            organisation: document.getElementById('org').value,
+            enquiryType: document.getElementById('type').value,
+            message: document.getElementById('message').value,
+          }),
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          throw new Error(data.error || 'Failed to send message.');
+        }
+
+        btn.textContent = 'Message sent ✓';
+        btn.style.background = 'var(--green-mid)';
+        contactForm.reset();
+
+        setTimeout(() => {
+          btn.textContent = 'Send Message →';
+          btn.style.background = '';
+          btn.disabled = false;
+        }, 3000);
+      } catch (err) {
+        alert(err.message);
+        btn.textContent = 'Send Message →';
+        btn.disabled = false;
+      }
+    });
   }
+
 
   // Smooth nav highlight on scroll (home page only)
   window.addEventListener('scroll', () => {
