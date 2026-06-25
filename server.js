@@ -35,7 +35,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // Sessions — single admin login, persisted in SQLite so they survive restarts.
-app.set('trust-proxy', 1)
+app.set('trust proxy', 1)
 app.use(
   session({
     store: new SQLiteStore(),
@@ -45,7 +45,7 @@ app.use(
     cookie: {
       httpOnly: true,
       sameSite: 'lax',
-      secure: false,
+      secure: PROD,
       maxAge: 1000 * 60 * 60 * 24 * 14,
     },
   }),
