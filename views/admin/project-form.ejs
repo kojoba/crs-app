@@ -47,8 +47,39 @@
 
       <div class="form-row">
         <label for="images">Add images (PNG / JPG / WEBP — up to 12, max 10 MB each)</label>
-        <input id="images" name="images" type="file" accept="image/*" multiple />
+        <input id="images" name="images" type="file" accept=".png,.jpg,.jpeg,.webp" multiple />
         <div class="hint">You can select several at once. They are added to the gallery below.</div>
+      </div>
+
+      <div class="form-row">
+        <label for="project_pdf">Upload PDF file</label>
+        <input
+          id="project_pdf"
+          name="project_pdf"
+          type="file"
+          accept="application/pdf,.pdf"
+        />
+        <div class="hint">Only PDF files are allowed. Maximum file size: 10 MB.</div>
+
+        <% if (mode === 'edit' && project.pdf_file_path) { %>
+
+          <label>
+            <input
+              type="checkbox"
+              name="remove_pdf"
+            >
+            Remove current PDF
+          </label>
+          <div class="hint">
+            Current PDF:
+            <a href="<%= project.pdf_file_path %>" target="_blank">
+              <%= project.pdf_original_filename || 'View PDF' %>
+            </a>
+            <% if(project.pdf_file_size) { %>
+              - <%= Math.round(project.pdf_file_size / 1024) %> KB
+            <% } %>
+          </div>
+        <% } %>
       </div>
 
       <div class="form-row" style="max-width:200px;">

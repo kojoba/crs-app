@@ -39,17 +39,32 @@ router.post('/contact', (req, res) => {
 // GET /api/projects  — each project includes its image gallery.
 router.get('/projects', (req, res) => {
   const projects = db.prepare(`
-    SELECT id, title, region, location, partner, year, description
+    SELECT
+      id,
+      title,
+      region,
+      location,
+      partner,
+      year,
+      description,
+      pdf_file_path,
+      pdf_original_filename,
+      pdf_file_size
     FROM projects
     ORDER BY display_order ASC, year DESC, created_at DESC
   `).all();
+
   const imgStmt = db.prepare(`
-    SELECT file_path, caption FROM project_images
-    WHERE project_id = ? ORDER BY display_order ASC, id ASC
+    SELECT file_path, caption
+    FROM project_images
+    WHERE project_id = ?
+    ORDER BY display_order ASC, id ASC
   `);
+
   for (const p of projects) {
     p.images = imgStmt.all(p.id);
   }
+
   res.json(projects);
 });
 

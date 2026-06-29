@@ -1,3 +1,5 @@
+
+
 // Guards admin routes. Redirects to /admin/login if not authenticated.
 function requireAuth(req, res, next) {
   if (req.session && req.session.userId) {

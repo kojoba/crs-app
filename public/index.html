@@ -572,6 +572,78 @@
       display: flex; align-items: center; gap: 6px;
     }
 
+    .image-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.88);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .image-modal[hidden] {
+      display: none;
+    }
+
+    .image-modal img {
+      max-width: 85%;
+      max-height: 85%;
+      object-fit: contain;
+      border-radius: 10px;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 25px;
+      right: 35px;
+      background: transparent;
+      color: white;
+      border: none;
+      font-size: 42px;
+      cursor: pointer;
+    }
+
+    .modal-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255, 255, 255, 0.15);
+      color: white;
+      border: none;
+      font-size: 60px;
+      width: 60px;
+      height: 80px;
+      cursor: pointer;
+      border-radius: 8px;
+    }
+
+    .modal-prev {
+      left: 30px;
+    }
+
+    .modal-next {
+      right: 30px;
+    }
+
+    .modal-nav:hover,
+    .modal-close:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    .project-main-image{
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      cursor: pointer;
+      border-radius: 10px;
+      transition: transform 0.25s ease;
+    }
+
+    .project-main-image:hover{
+      transform: scale(1.02);
+    }
+
     /* Partners full */
     .partners-full { background: var(--cream); }
 
@@ -1433,6 +1505,17 @@
 <!-- ═══════════════════════════════════════════════════════
      PROJECTS PAGE
 ════════════════════════════════════════════════════════ -->
+
+<div id="projectImageModal" class="image-modal" hidden>
+  <button class="modal-close" onclick="closeProjectModal()">x</button>
+
+  <button class="modal-nav modal-prev" onclick="prevProjectImage()"><</button>
+
+  <img src="" alt="Project Image" id="modalProjectImage">
+
+  <button class="modal-nav modal-next" onclick="nextProjectImage()">></button>
+</div>
+
 <div id="page-projects" class="page">
 
   <div class="page-hero">
@@ -1927,31 +2010,108 @@
         ${items.map((p) => `<div class="partner-item"><div class="partner-dot"></div><p>${esc(p.name)}</p></div>`).join('')}
       </div>`).join('');
   }
-  function renderProjects(items) {
-    const section = document.getElementById('projects-section');
-    const list = document.getElementById('projects-list');
-    if (!section || !list) return;
-    if (!items.length) { section.hidden = true; return; }
+  
+  let loadedProjects = [];
+  let currentProjectImages = [];
+  let currentImageIndex = 0;
+
+  function renderProjects(projects) {
+    const section = document.getElementById("projects-section");
+    const projectsList = document.getElementById("projects-list");
+
+    if (!section || !projectsList) return;
+
+    if (!projects || projects.length === 0) {
+      section.hidden = true;
+      projectsList.innerHTML = "";
+      return;
+    }
+
     section.hidden = false;
-    list.innerHTML = items.map((p) => {
-      const imgs = p.images || [];
-      const cover = imgs.length ? `<img src="${esc(imgs[0].file_path)}" alt="${esc(p.title)}" style="width:100%; height:190px; object-fit:cover; border-radius:8px; margin-bottom:18px;">` : '';
-      const thumbs = imgs.length > 1 ? `<div style="display:flex; gap:8px; margin-top:14px; flex-wrap:wrap;">${imgs.slice(1).map((im) => `<img src="${esc(im.file_path)}" alt="" style="width:54px; height:54px; object-fit:cover; border-radius:6px;">`).join('')}</div>` : '';
+    loadedProjects = projects;
+
+    projectsList.innerHTML = projects.map((project, projectIndex) => {
+      const images = project.images || [];
+      const mainImage = images.length > 0 ? images[0].file_path : "";
+
       return `
         <div class="project-card">
-          ${cover}
-          ${p.region ? `<span class="project-tag">${esc(p.region)}</span>` : ''}
-          <h3>${esc(p.title)}</h3>
-          ${p.description ? `<p>${esc(p.description)}</p>` : ''}
+          ${
+            mainImage
+              ? `<img 
+                  src="${esc(mainImage)}" 
+                  alt="${esc(project.title)}" 
+                  class="project-main-image"
+                  onclick="openProjectModal(${projectIndex}, 0)"
+                />`
+              : ""
+          }
+
+          ${project.region ? `<span class="project-tag">${esc(project.region)}</span>` : ""}
+
+          <h3>${esc(project.title)}</h3>
+          <p>${esc(project.description || "")}</p>
+
           <div class="project-meta">
-            ${p.location ? `<span>📍 ${esc(p.location)}</span>` : ''}
-            ${p.partner  ? `<span>🤝 ${esc(p.partner)}</span>`  : ''}
-            ${p.year     ? `<span>📅 ${esc(p.year)}</span>`     : ''}
+            ${project.year ? `<span>${esc(project.year)}</span>` : ""}
+            ${project.partner ? `<span>${esc(project.partner)}</span>` : ""}
+            ${project.pdf_file_path ? `
+              <div style="margin-top: 18px;">
+                <a
+                  href="${esc(project.pdf_file_path)}"
+                  target="_blank"
+                  download
+                  class="btn btn-outline"
+                >
+                  Download Project
+                </a>
+              </div>
+              ` : ""}
           </div>
-          ${thumbs}
-        </div>`;
-    }).join('');
+        </div>
+      `;
+    }).join("");
   }
+
+  function openProjectModal(projectIndex, imageIndex) {
+    const project = loadedProjects[projectIndex];
+    if (!project || !project.images || project.images.length === 0) return;
+
+    currentProjectImages = project.images;
+    currentImageIndex = imageIndex;
+
+    document.getElementById("modalProjectImage").src =
+      currentProjectImages[currentImageIndex].file_path;
+
+    document.getElementById("projectImageModal").hidden = false;
+  }
+
+  function closeProjectModal() {
+    document.getElementById("projectImageModal").hidden = true;
+    document.getElementById("modalProjectImage").src = "";
+  }
+
+  function nextProjectImage() {
+    if (currentProjectImages.length === 0) return;
+
+    currentImageIndex =
+      (currentImageIndex + 1) % currentProjectImages.length;
+
+    document.getElementById("modalProjectImage").src =
+      currentProjectImages[currentImageIndex].file_path;
+  }
+
+  function prevProjectImage() {
+    if (currentProjectImages.length === 0) return;
+
+    currentImageIndex =
+      (currentImageIndex - 1 + currentProjectImages.length) %
+      currentProjectImages.length;
+
+    document.getElementById("modalProjectImage").src =
+      currentProjectImages[currentImageIndex].file_path;
+  }
+
   function renderPublications(items) {
     const section = document.getElementById('publications-section');
     const list = document.getElementById('publications-list');

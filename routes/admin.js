@@ -28,18 +28,96 @@ const storage = multer.diskStorage({
   },
 });
 
+const PROJECT_IMAGE_RE = /\.(png|jpe?g|webp)$/i;
+const PROJECT_PDF_RE = /\.pdf$/i;
+
+const uploadProjectFiles = multer({
+  storage,
+  limits: {
+    fileSize: 10 * 1024 * 1024,
+    files: 13
+  },
+  fileFilter: (req, file, cb) => {
+    if (file.fieldname === 'images'){
+      const allowedImageTypes = [
+        'image/jpeg',
+        'image/png',
+        'image/webp',
+      ];
+
+      if(
+        !PROJECT_IMAGE_RE.test(file.originalname) ||
+        !allowedImageTypes.includes(file.mimetype)
+      ){
+        return cb(new Error('Only PNG, JPG, JPEG and WEBP images are allowed.'));
+      }
+
+      return cb(null, true);
+    }
+
+    if (file.fieldname === 'project_pdf') {
+      if (
+        !PROJECT_PDF_RE.test(file.originalname) ||
+        file.mimetype !== 'application/pdf'
+      ) {
+        return cb(new Error('Only PDF files are allowed.'));
+      }
+      return cb(null, true);
+    }
+
+    cb(new Error('Invalid upload field.'));
+  },
+});
+
 const IMAGE_RE = /\.(png|jpe?g|webp|gif)$/i;
 const DOC_RE = /\.(pdf|docx?|pptx?|xlsx?|png|jpe?g|webp)$/i;
+
+const allowedDocTypes = [
+  'application/pdf',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  'application/msword',
+  'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  'image/jpeg',
+  'image/png',
+  'image/webp',
+];
 
 const uploadDoc = multer({
   storage,
   limits: { fileSize: 25 * 1024 * 1024 },
-  fileFilter: (req, file, cb) => cb(null, DOC_RE.test(file.originalname)),
+  fileFilter: (req, file, cb) => {
+    if (
+      !DOC_RE.test(file.originalname) ||
+      !allowedDocTypes.includes(file.mimetype)
+    ) {
+      return cb(new Error('Unsupported document type.'));
+    }
+
+    cb(null, true);
+  },
 });
+
 const uploadImages = multer({
   storage,
-  limits: { fileSize: 10 * 1024 * 1024, files: 12 },
-  fileFilter: (req, file, cb) => cb(null, IMAGE_RE.test(file.originalname)),
+  limits: { fileSize: 10 * 1024 * 1024 },
+  fileFilter: (req, file, cb) => {
+    const allowedImageTypes = [
+      'image/jpeg',
+      'image/png',
+      'image/webp',
+      'image/gif',
+    ];
+
+    if (
+      !IMAGE_RE.test(file.originalname) ||
+      !allowedImageTypes.includes(file.mimetype)
+    ) {
+      return cb(new Error('Only PNG, JPG, JPEG, WEBP, and GIF images are allowed.'));
+    }
+
+    cb(null, true);
+  },
 });
 
 // Remove an uploaded file from disk given its public path (/uploads/x).
@@ -128,23 +206,53 @@ router.get('/projects/new', requireAuth, (req, res) => {
   res.render('admin/project-form', { project: {}, images: [], mode: 'new' });
 });
 
-router.post('/projects', requireAuth, uploadImages.array('images', 12), (req, res) => {
+router.post('/projects', requireAuth, uploadProjectFiles.fields([
+  { name: 'images', maxCount: 12 },
+  { name: 'project_pdf', maxCount: 1 },
+]), (req, res) => {
   const { title, region, location, partner, year, description, display_order } = req.body;
+
+  const images = req.files?.images || [];
+  const pdf = req.files?.project_pdf?.[0] || null;
+
   if (!title || !title.trim()) {
-    (req.files || []).forEach((f) => unlinkPublic(`/uploads/${f.filename}`));
+    images.forEach((f) => unlinkPublic(`/uploads/${f.filename}`));
+    if (pdf) unlinkPublic(`/uploads/${pdf.filename}`);
+
     flash(req, 'error', 'Title is required.');
     return res.redirect('/admin/projects/new');
   }
+
   const info = db.prepare(`
-    INSERT INTO projects (title, region, location, partner, year, description, display_order)
-    VALUES (?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO projects (
+      title, region, location, partner, year, description,
+      pdf_file_path, pdf_original_filename, pdf_file_size,
+      display_order
+    )
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `).run(
-    title.trim(), region || null, location || null, partner || null,
-    year ? Number(year) : null, description || null, display_order ? Number(display_order) : 0,
+    title.trim(),
+    region || null,
+    location || null,
+    partner || null,
+    year ? Number(year) : null,
+    description || null,
+    pdf ? `/uploads/${pdf.filename}` : null,
+    pdf ? pdf.originalname : null,
+    pdf ? pdf.size : null,
+    display_order ? Number(display_order) : 0,
   );
+
   const projectId = info.lastInsertRowid;
-  const imgStmt = db.prepare('INSERT INTO project_images (project_id, file_path, display_order) VALUES (?, ?, ?)');
-  (req.files || []).forEach((f, i) => imgStmt.run(projectId, `/uploads/${f.filename}`, i));
+
+  const imgStmt = db.prepare(
+    'INSERT INTO project_images (project_id, file_path, display_order) VALUES (?, ?, ?)'
+  );
+
+  images.forEach((f, i) => {
+    imgStmt.run(projectId, `/uploads/${f.filename}`, i);
+  });
+
   flash(req, 'success', 'Project created.');
   res.redirect(`/admin/projects/${projectId}/edit`);
 });
@@ -155,34 +263,106 @@ router.get('/projects/:id/edit', requireAuth, (req, res) => {
   res.render('admin/project-form', { project, images: getProjectImages(project.id), mode: 'edit' });
 });
 
-router.post('/projects/:id', requireAuth, uploadImages.array('images', 12), (req, res) => {
-  const project = db.prepare('SELECT id FROM projects WHERE id = ?').get(req.params.id);
-  if (!project) return res.status(404).send('Not found');
+router.post('/projects/:id', requireAuth, uploadProjectFiles.fields([
+  { name: 'images', maxCount: 12 },
+  { name: 'project_pdf', maxCount: 1 },
+]), (req, res) => {
+  const existingProject = db.prepare('SELECT * FROM projects WHERE id = ?').get(req.params.id);
+  const {remove_pdf} = req.body;
+  if (!existingProject) return res.status(404).send('Not found');
+
   const { title, region, location, partner, year, description, display_order } = req.body;
+
+  const images = req.files?.images || [];
+  const pdf = req.files?.project_pdf?.[0] || null;
+
   if (!title || !title.trim()) {
-    (req.files || []).forEach((f) => unlinkPublic(`/uploads/${f.filename}`));
+    images.forEach((f) => unlinkPublic(`/uploads/${f.filename}`));
+    if (pdf) unlinkPublic(`/uploads/${pdf.filename}`);
+
     flash(req, 'error', 'Title is required.');
     return res.redirect(`/admin/projects/${req.params.id}/edit`);
   }
+
+  let pdfFilePath = existingProject.pdf_file_path;
+  let pdfOriginalFilename = existingProject.pdf_original_filename;
+  let pdfFileSize = existingProject.pdf_file_size;
+
+  if (pdf) {
+    unlinkPublic(existingProject.pdf_file_path);
+
+    pdfFilePath = `/uploads/${pdf.filename}`;
+    pdfOriginalFilename = pdf.originalname;
+    pdfFileSize = pdf.size;
+  }
+  else if (remove_pdf === 'on' && existingProject.pdf_file_path && !pdf){
+    unlinkPublic(existingProject.pdf_file_path);
+
+    pdfFilePath = null;
+    pdfOriginalFilename = null;
+    pdfFileSize = null;
+  }
+
   db.prepare(`
-    UPDATE projects SET title = ?, region = ?, location = ?, partner = ?, year = ?,
-      description = ?, display_order = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?
+    UPDATE projects SET 
+      title = ?, 
+      region = ?, 
+      location = ?, 
+      partner = ?, 
+      year = ?,
+      description = ?, 
+      pdf_file_path = ?,
+      pdf_original_filename = ?,
+      pdf_file_size = ?,
+      display_order = ?, 
+      updated_at = CURRENT_TIMESTAMP 
+    WHERE id = ?
   `).run(
-    title.trim(), region || null, location || null, partner || null,
-    year ? Number(year) : null, description || null, display_order ? Number(display_order) : 0,
+    title.trim(),
+    region || null,
+    location || null,
+    partner || null,
+    year ? Number(year) : null,
+    description || null,
+    pdfFilePath,
+    pdfOriginalFilename,
+    pdfFileSize,
+    display_order ? Number(display_order) : 0,
     req.params.id,
   );
-  const base = db.prepare('SELECT COALESCE(MAX(display_order), -1) AS m FROM project_images WHERE project_id = ?').get(req.params.id).m;
-  const imgStmt = db.prepare('INSERT INTO project_images (project_id, file_path, display_order) VALUES (?, ?, ?)');
-  (req.files || []).forEach((f, i) => imgStmt.run(req.params.id, `/uploads/${f.filename}`, base + 1 + i));
+
+  const base = db.prepare(
+    'SELECT COALESCE(MAX(display_order), -1) AS m FROM project_images WHERE project_id = ?'
+  ).get(req.params.id).m;
+
+  const imgStmt = db.prepare(
+    'INSERT INTO project_images (project_id, file_path, display_order) VALUES (?, ?, ?)'
+  );
+
+  images.forEach((f, i) => {
+    imgStmt.run(req.params.id, `/uploads/${f.filename}`, base + 1 + i);
+  });
+
   flash(req, 'success', 'Project updated.');
   res.redirect(`/admin/projects/${req.params.id}/edit`);
 });
 
 router.post('/projects/:id/delete', requireAuth, (req, res) => {
-  getProjectImages(req.params.id).forEach((img) => unlinkPublic(img.file_path));
+  const project = db.prepare(
+    'SELECT * FROM projects WHERE id = ?'
+  ).get(req.params.id);
+
+  if (project?.pdf_file_path) {
+    unlinkPublic(project.pdf_file_path);
+  }
+
+  getProjectImages(req.params.id).forEach((img) => {
+    unlinkPublic(img.file_path);
+  });
+
   db.prepare('DELETE FROM project_images WHERE project_id = ?').run(req.params.id);
   db.prepare('DELETE FROM projects WHERE id = ?').run(req.params.id);
+
   flash(req, 'success', 'Project deleted.');
   res.redirect('/admin/projects');
 });
